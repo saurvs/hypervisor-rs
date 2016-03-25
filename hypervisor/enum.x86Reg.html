@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `x86Reg` enum in crate `hypervisor`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, x86Reg">
+
+    <title>hypervisor::x86Reg - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>hypervisor</a></p><script>window.sidebarCurrent = {name: 'x86Reg', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content enum">
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>hypervisor</a>::<wbr><a class='enum' href=''>x86Reg</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-465' class='srclink' href='../src/hypervisor/src/lib.rs.html#197-250' title='goto source code'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum x86Reg {
+    RIP,
+    RFLAGS,
+    RAX,
+    RCX,
+    RDX,
+    RBX,
+    RSI,
+    RDI,
+    RSP,
+    RBP,
+    R8,
+    R9,
+    R10,
+    R11,
+    R12,
+    R13,
+    R14,
+    R15,
+    CS,
+    SS,
+    DS,
+    ES,
+    FS,
+    GS,
+    IDT_BASE,
+    IDT_LIMIT,
+    GDT_BASE,
+    GDT_LIMIT,
+    LDTR,
+    LDT_BASE,
+    LDT_LIMIT,
+    LDT_AR,
+    TR,
+    TSS_BASE,
+    TSS_LIMIT,
+    TSS_AR,
+    CR0,
+    CR1,
+    CR2,
+    CR3,
+    CR4,
+    DR0,
+    DR1,
+    DR2,
+    DR3,
+    DR4,
+    DR5,
+    DR6,
+    DR7,
+    TPR,
+    XCR0,
+    REGISTERS_MAX,
+}</pre><div class='docblock'><p>x86 architectural register</p>
+</div><h2 class='variants'>Variants</h2>
+<table class='variants_table'><tr><td id='variant.RIP'><code>RIP</code></td><td></td><td></td></tr><tr><td id='variant.RFLAGS'><code>RFLAGS</code></td><td></td><td></td></tr><tr><td id='variant.RAX'><code>RAX</code></td><td></td><td></td></tr><tr><td id='variant.RCX'><code>RCX</code></td><td></td><td></td></tr><tr><td id='variant.RDX'><code>RDX</code></td><td></td><td></td></tr><tr><td id='variant.RBX'><code>RBX</code></td><td></td><td></td></tr><tr><td id='variant.RSI'><code>RSI</code></td><td></td><td></td></tr><tr><td id='variant.RDI'><code>RDI</code></td><td></td><td></td></tr><tr><td id='variant.RSP'><code>RSP</code></td><td></td><td></td></tr><tr><td id='variant.RBP'><code>RBP</code></td><td></td><td></td></tr><tr><td id='variant.R8'><code>R8</code></td><td></td><td></td></tr><tr><td id='variant.R9'><code>R9</code></td><td></td><td></td></tr><tr><td id='variant.R10'><code>R10</code></td><td></td><td></td></tr><tr><td id='variant.R11'><code>R11</code></td><td></td><td></td></tr><tr><td id='variant.R12'><code>R12</code></td><td></td><td></td></tr><tr><td id='variant.R13'><code>R13</code></td><td></td><td></td></tr><tr><td id='variant.R14'><code>R14</code></td><td></td><td></td></tr><tr><td id='variant.R15'><code>R15</code></td><td></td><td></td></tr><tr><td id='variant.CS'><code>CS</code></td><td></td><td></td></tr><tr><td id='variant.SS'><code>SS</code></td><td></td><td></td></tr><tr><td id='variant.DS'><code>DS</code></td><td></td><td></td></tr><tr><td id='variant.ES'><code>ES</code></td><td></td><td></td></tr><tr><td id='variant.FS'><code>FS</code></td><td></td><td></td></tr><tr><td id='variant.GS'><code>GS</code></td><td></td><td></td></tr><tr><td id='variant.IDT_BASE'><code>IDT_BASE</code></td><td></td><td></td></tr><tr><td id='variant.IDT_LIMIT'><code>IDT_LIMIT</code></td><td></td><td></td></tr><tr><td id='variant.GDT_BASE'><code>GDT_BASE</code></td><td></td><td></td></tr><tr><td id='variant.GDT_LIMIT'><code>GDT_LIMIT</code></td><td></td><td></td></tr><tr><td id='variant.LDTR'><code>LDTR</code></td><td></td><td></td></tr><tr><td id='variant.LDT_BASE'><code>LDT_BASE</code></td><td></td><td></td></tr><tr><td id='variant.LDT_LIMIT'><code>LDT_LIMIT</code></td><td></td><td></td></tr><tr><td id='variant.LDT_AR'><code>LDT_AR</code></td><td></td><td></td></tr><tr><td id='variant.TR'><code>TR</code></td><td></td><td></td></tr><tr><td id='variant.TSS_BASE'><code>TSS_BASE</code></td><td></td><td></td></tr><tr><td id='variant.TSS_LIMIT'><code>TSS_LIMIT</code></td><td></td><td></td></tr><tr><td id='variant.TSS_AR'><code>TSS_AR</code></td><td></td><td></td></tr><tr><td id='variant.CR0'><code>CR0</code></td><td></td><td></td></tr><tr><td id='variant.CR1'><code>CR1</code></td><td></td><td></td></tr><tr><td id='variant.CR2'><code>CR2</code></td><td></td><td></td></tr><tr><td id='variant.CR3'><code>CR3</code></td><td></td><td></td></tr><tr><td id='variant.CR4'><code>CR4</code></td><td></td><td></td></tr><tr><td id='variant.DR0'><code>DR0</code></td><td></td><td></td></tr><tr><td id='variant.DR1'><code>DR1</code></td><td></td><td></td></tr><tr><td id='variant.DR2'><code>DR2</code></td><td></td><td></td></tr><tr><td id='variant.DR3'><code>DR3</code></td><td></td><td></td></tr><tr><td id='variant.DR4'><code>DR4</code></td><td></td><td></td></tr><tr><td id='variant.DR5'><code>DR5</code></td><td></td><td></td></tr><tr><td id='variant.DR6'><code>DR6</code></td><td></td><td></td></tr><tr><td id='variant.DR7'><code>DR7</code></td><td></td><td></td></tr><tr><td id='variant.TPR'><code>TPR</code></td><td></td><td></td></tr><tr><td id='variant.XCR0'><code>XCR0</code></td><td></td><td></td></tr><tr><td id='variant.REGISTERS_MAX'><code>REGISTERS_MAX</code></td><td></td><td></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../hypervisor/enum.x86Reg.html' title='hypervisor::x86Reg'>x86Reg</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../hypervisor/enum.x86Reg.html' title='hypervisor::x86Reg'>x86Reg</a></code></h4>
+<h4 id='method.clone_from' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "hypervisor";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

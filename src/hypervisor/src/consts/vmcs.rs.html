@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/consts/vmcs.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>vmcs.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+</pre><pre class='rust '>
+<span class='comment'>/*
+Copyright (c) 2016 Saurav Sachidanand
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/</span>
+
+<span class='doccomment'>//! Virtual Machine Control Structure (VMCS) field IDs</span>
+
+<span class='kw'>use</span> <span class='ident'>libc</span>::<span class='op'>*</span>;
+
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_VPID</span>                        : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000000</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_POSTED_INT_N_VECTOR</span>    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000002</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EPTP_INDEX</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000004</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_ES</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000800</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CS</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000802</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SS</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000804</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_DS</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000806</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_FS</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000808</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_GS</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000080a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_LDTR</span>                  : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000080c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_TR</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000080e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_INT_STATUS</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000810</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_ES</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c00</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_CS</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c02</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_SS</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c04</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_DS</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c06</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_FS</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c08</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_GS</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c0a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_TR</span>                     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00000c0c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_IO_BITMAP_A</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002000</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_IO_BITMAP_B</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002002</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_MSR_BITMAPS</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002004</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMEXIT_MSR_STORE_ADDR</span>  : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002006</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMEXIT_MSR_LOAD_ADDR</span>   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002008</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMENTRY_MSR_LOAD_ADDR</span>  : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000200a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EXECUTIVE_VMCS_PTR</span>     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000200c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_TSC_OFFSET</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002010</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VIRTUAL_APIC</span>           : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002012</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_APIC_ACCESS</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002014</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_POSTED_INT_DESC_ADDR</span>   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002016</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMFUNC_CTRL</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002018</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EPTP</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000201a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EOI_EXIT_BITMAP_0</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000201c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EOI_EXIT_BITMAP_1</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000201e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EOI_EXIT_BITMAP_2</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002020</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EOI_EXIT_BITMAP_3</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002022</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EPTP_LIST_ADDR</span>         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002024</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMREAD_BITMAP_ADDR</span>     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002026</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMWRITE_BITMAP_ADDR</span>    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002028</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VIRT_EXC_INFO_ADDR</span>     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000202a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_XSS_EXITING_BITMAP</span>     : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000202c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_PHYSICAL_ADDRESS</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002400</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_LINK_POINTER</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002800</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IA32_DEBUGCTL</span>         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002802</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IA32_PAT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002804</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IA32_EFER</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002806</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IA32_PERF_GLOBAL_CTRL</span> : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002808</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_PDPTE0</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000280a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_PDPTE1</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000280c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_PDPTE2</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000280e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_PDPTE3</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002810</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IA32_PAT</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002c00</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IA32_EFER</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002c02</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IA32_PERF_GLOBAL_CTRL</span>  : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00002c04</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_PIN_BASED</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004000</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CPU_BASED</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004002</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_EXC_BITMAP</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004004</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_PF_ERROR_MASK</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004006</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_PF_ERROR_MATCH</span>         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004008</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR3_COUNT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000400a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMEXIT_CONTROLS</span>        : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000400c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMEXIT_MSR_STORE_COUNT</span> : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000400e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMEXIT_MSR_LOAD_COUNT</span>  : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004010</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMENTRY_CONTROLS</span>       : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004012</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMENTRY_MSR_LOAD_COUNT</span> : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004014</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMENTRY_IRQ_INFO</span>       : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004016</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMENTRY_EXC_ERROR</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004018</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_VMENTRY_INSTR_LEN</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000401a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_TPR_THRESHOLD</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000401c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CPU_BASED2</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000401e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_PLE_GAP</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004020</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_PLE_WINDOW</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004022</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_INSTR_ERROR</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004400</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_EXIT_REASON</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004402</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_VMEXIT_IRQ_INFO</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004404</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_VMEXIT_IRQ_ERROR</span>         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004406</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_IDT_VECTOR_INFO</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004408</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_IDT_VECTOR_ERROR</span>         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000440a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_VMEXIT_INSTR_LEN</span>         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000440c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_VMX_INSTR_INFO</span>           : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000440e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_ES_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004800</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CS_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004802</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SS_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004804</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_DS_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004806</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_FS_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004808</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_GS_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000480a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_LDTR_LIMIT</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000480c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_TR_LIMIT</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000480e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_GDTR_LIMIT</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004810</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IDTR_LIMIT</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004812</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_ES_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004814</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CS_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004816</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SS_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004818</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_DS_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000481a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_FS_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000481c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_GS_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000481e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_LDTR_AR</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004820</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_TR_AR</span>                 : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004822</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IGNORE_IRQ</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004824</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_ACTIVITY_STATE</span>        : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004826</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SMBASE</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004828</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IA32_SYSENTER_CS</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000482a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_VMX_TIMER_VALUE</span>       : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000482e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IA32_SYSENTER_CS</span>       : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00004c00</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR0_MASK</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006000</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR4_MASK</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006002</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR0_SHADOW</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006004</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR4_SHADOW</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006006</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR3_VALUE0</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006008</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR3_VALUE1</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000600a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR3_VALUE2</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000600c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_CTRL_CR3_VALUE3</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000600e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_EXIT_QUALIFIC</span>            : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006400</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_IO_RCX</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006402</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_IO_RSI</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006404</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_IO_RDI</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006406</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_IO_RIP</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006408</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_RO_GUEST_LIN_ADDR</span>           : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000640a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CR0</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006800</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CR3</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006802</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CR4</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006804</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_ES_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006806</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_CS_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006808</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SS_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000680a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_DS_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000680c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_FS_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000680e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_GS_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006810</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_LDTR_BASE</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006812</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_TR_BASE</span>               : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006814</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_GDTR_BASE</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006816</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_IDTR_BASE</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006818</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_DR7</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000681a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_RSP</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000681c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_RIP</span>                   : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x0000681e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_RFLAGS</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006820</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_DEBUG_EXC</span>             : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006822</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SYSENTER_ESP</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006824</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_GUEST_SYSENTER_EIP</span>          : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006826</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_CR0</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c00</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_CR3</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c02</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_CR4</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c04</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_FS_BASE</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c06</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_GS_BASE</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c08</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_TR_BASE</span>                : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c0a</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_GDTR_BASE</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c0c</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IDTR_BASE</span>              : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c0e</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IA32_SYSENTER_ESP</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c10</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_IA32_SYSENTER_EIP</span>      : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c12</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_RSP</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c14</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_HOST_RIP</span>                    : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c16</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>VMCS_MAX</span>                         : <span class='ident'>uint32_t</span> <span class='op'>=</span> <span class='number'>0x00006c18</span>;
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../../";
+        window.currentCrate = "hypervisor";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../../jquery.js"></script>
+    <script src="../../../../main.js"></script>
+    
+    <script defer src="../../../../search-index.js"></script>
+</body>
+</html>

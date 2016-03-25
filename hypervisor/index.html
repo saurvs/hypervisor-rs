@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `hypervisor` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, hypervisor">
+
+    <title>hypervisor - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'hypervisor', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>hypervisor</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/hypervisor/src/lib.rs.html#23-453' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>This is a Rust library that taps into functionality that enables
+hardware-accelerated execution of virtual machines on OS X.</p>
+
+<p>It binds to the <code>Hypervisor</code> framework on OS X, and exposes a safe Rust
+interface through the <code>hypervisor</code> module, and an unsafe foreign function
+interface through the <code>hypervisor::ffi</code> module.</p>
+
+<p>To use this library, you need</p>
+
+<ul>
+<li><p>OS X Yosemite (10.10), or newer</p></li>
+<li><p>an Intel processor with the VT-x feature set that includes Extended Page
+Tables (EPT) and Unrestricted Mode. To verify this, run and expect the following
+in your Terminal:</p>
+
+<pre><code class="language-shell">$ sysctl kern.hv_support
+kern.hv_support: 1
+</code></pre></li>
+</ul>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='consts/index.html'
+                               title='hypervisor::consts'>consts</a></td>
+                        <td class='docblock short'>
+                             <p>Some useful constants</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='ffi/index.html'
+                               title='hypervisor::ffi'>ffi</a></td>
+                        <td class='docblock short'>
+                             <p>Bindings to the Hypervisor Framework</p>
+                        </td>
+                    </tr>
+                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.vCPU.html'
+                               title='hypervisor::vCPU'>vCPU</a></td>
+                        <td class='docblock short'>
+                             <p>Virtual CPU</p>
+                        </td>
+                    </tr>
+                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.Error.html'
+                               title='hypervisor::Error'>Error</a></td>
+                        <td class='docblock short'>
+                             <p>Error returned after every call</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.MemPerm.html'
+                               title='hypervisor::MemPerm'>MemPerm</a></td>
+                        <td class='docblock short'>
+                             <p>Guest physical memory region permissions</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.VMXCap.html'
+                               title='hypervisor::VMXCap'>VMXCap</a></td>
+                        <td class='docblock short'>
+                             <p>VMX cabability</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.x86Reg.html'
+                               title='hypervisor::x86Reg'>x86Reg</a></td>
+                        <td class='docblock short'>
+                             <p>x86 architectural register</p>
+                        </td>
+                    </tr>
+                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.create_vm.html'
+                               title='hypervisor::create_vm'>create_vm</a></td>
+                        <td class='docblock short'>
+                             <p>Creates a VM instance for the current Mach task</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.destroy_vm.html'
+                               title='hypervisor::destroy_vm'>destroy_vm</a></td>
+                        <td class='docblock short'>
+                             <p>Destroys the VM instance associated with the current Mach task</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.interrupt_vcpus.html'
+                               title='hypervisor::interrupt_vcpus'>interrupt_vcpus</a></td>
+                        <td class='docblock short'>
+                             <p>Forces an immediate VMEXIT of a set of vCPUs</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.map_mem.html'
+                               title='hypervisor::map_mem'>map_mem</a></td>
+                        <td class='docblock short'>
+                             <p>Maps a region in the virtual address space of the current Mach task into the guest physical
+address space of the virutal machine</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.protect_mem.html'
+                               title='hypervisor::protect_mem'>protect_mem</a></td>
+                        <td class='docblock short'>
+                             <p>Modifies the permissions of a region in the guest physical address space of the virtual
+machine</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.read_vmx_cap.html'
+                               title='hypervisor::read_vmx_cap'>read_vmx_cap</a></td>
+                        <td class='docblock short'>
+                             <p>Reads a VMX capability of the host processor</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.sync_tsc.html'
+                               title='hypervisor::sync_tsc'>sync_tsc</a></td>
+                        <td class='docblock short'>
+                             <p>Synchronizes the guest Timestamp-Counters (TSC) across all vCPUs</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.unmap_mem.html'
+                               title='hypervisor::unmap_mem'>unmap_mem</a></td>
+                        <td class='docblock short'>
+                             <p>Unmaps a region in the guest physical address space of the virutal machine</p>
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "hypervisor";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

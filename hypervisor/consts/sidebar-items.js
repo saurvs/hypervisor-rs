@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["VMX_BASIC_TRUE_CTLS",""]],"mod":[["irq","Interrupt Request (IRQ) Codes"],["vmcs","Virtual Machine Control Structure (VMCS) field IDs"],["vmx_cap","VMX capability field values"],["vmx_exit","VMX exit reasons"]]});

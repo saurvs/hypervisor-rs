@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ffi` mod in crate `hypervisor`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ffi">
+
+    <title>hypervisor::ffi - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>hypervisor</a></p><script>window.sidebarCurrent = {name: 'ffi', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>hypervisor</a>::<wbr><a class='mod' href=''>ffi</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-6' class='srclink' href='../../src/hypervisor/src/ffi.rs.html#23-164' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Bindings to the Hypervisor Framework</p>
+</div><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_BAD_ARGUMENT.html'
+                               title='hypervisor::ffi::HV_BAD_ARGUMENT'>HV_BAD_ARGUMENT</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_BUSY.html'
+                               title='hypervisor::ffi::HV_BUSY'>HV_BUSY</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_ERROR.html'
+                               title='hypervisor::ffi::HV_ERROR'>HV_ERROR</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_MEMORY_EXEC.html'
+                               title='hypervisor::ffi::HV_MEMORY_EXEC'>HV_MEMORY_EXEC</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_MEMORY_READ.html'
+                               title='hypervisor::ffi::HV_MEMORY_READ'>HV_MEMORY_READ</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_MEMORY_WRITE.html'
+                               title='hypervisor::ffi::HV_MEMORY_WRITE'>HV_MEMORY_WRITE</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_NO_DEVICE.html'
+                               title='hypervisor::ffi::HV_NO_DEVICE'>HV_NO_DEVICE</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_NO_RESOURCES.html'
+                               title='hypervisor::ffi::HV_NO_RESOURCES'>HV_NO_RESOURCES</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_SUCCESS.html'
+                               title='hypervisor::ffi::HV_SUCCESS'>HV_SUCCESS</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_UNSUPPORTED.html'
+                               title='hypervisor::ffi::HV_UNSUPPORTED'>HV_UNSUPPORTED</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_VCPU_DEFAULT.html'
+                               title='hypervisor::ffi::HV_VCPU_DEFAULT'>HV_VCPU_DEFAULT</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.HV_VM_DEFAULT.html'
+                               title='hypervisor::ffi::HV_VM_DEFAULT'>HV_VM_DEFAULT</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_create.html'
+                               title='hypervisor::ffi::hv_vcpu_create'>hv_vcpu_create</a></td>
+                        <td class='docblock short'>
+                             <p>Creates a vCPU instance for the current thread</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_destroy.html'
+                               title='hypervisor::ffi::hv_vcpu_destroy'>hv_vcpu_destroy</a></td>
+                        <td class='docblock short'>
+                             <p>Destroys the vCPU instance associated with the current thread</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_enable_native_msr.html'
+                               title='hypervisor::ffi::hv_vcpu_enable_native_msr'>hv_vcpu_enable_native_msr</a></td>
+                        <td class='docblock short'>
+                             <p>Enables an MSR to be used natively by the VM</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_flush.html'
+                               title='hypervisor::ffi::hv_vcpu_flush'>hv_vcpu_flush</a></td>
+                        <td class='docblock short'>
+                             <p>Forces flushing of cached vCPU state</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_get_exec_time.html'
+                               title='hypervisor::ffi::hv_vcpu_get_exec_time'>hv_vcpu_get_exec_time</a></td>
+                        <td class='docblock short'>
+                             <p>Returns the cumulative execution time of a vCPU in nanoseconds</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_interrupt.html'
+                               title='hypervisor::ffi::hv_vcpu_interrupt'>hv_vcpu_interrupt</a></td>
+                        <td class='docblock short'>
+                             <p>Forces an immediate VMEXIT of a set of vCPUs of the VM</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_invalidate_tlb.html'
+                               title='hypervisor::ffi::hv_vcpu_invalidate_tlb'>hv_vcpu_invalidate_tlb</a></td>
+                        <td class='docblock short'>
+                             <p>Invalidates the TLB of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_read_fpstate.html'
+                               title='hypervisor::ffi::hv_vcpu_read_fpstate'>hv_vcpu_read_fpstate</a></td>
+                        <td class='docblock short'>
+                             <p>Returns the current architectural x86 floating point and
+SIMD state of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_read_msr.html'
+                               title='hypervisor::ffi::hv_vcpu_read_msr'>hv_vcpu_read_msr</a></td>
+                        <td class='docblock short'>
+                             <p>Returns the current value of an MSR of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_read_register.html'
+                               title='hypervisor::ffi::hv_vcpu_read_register'>hv_vcpu_read_register</a></td>
+                        <td class='docblock short'>
+                             <p>Returns the current value of an architectural x86 register
+of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_run.html'
+                               title='hypervisor::ffi::hv_vcpu_run'>hv_vcpu_run</a></td>
+                        <td class='docblock short'>
+                             <p>Executes a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_write_fpstate.html'
+                               title='hypervisor::ffi::hv_vcpu_write_fpstate'>hv_vcpu_write_fpstate</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the architectural x86 floating point and SIMD state of
+a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_write_msr.html'
+                               title='hypervisor::ffi::hv_vcpu_write_msr'>hv_vcpu_write_msr</a></td>
+                        <td class='docblock short'>
+                             <p>Set the value of an MSR of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vcpu_write_register.html'
+                               title='hypervisor::ffi::hv_vcpu_write_register'>hv_vcpu_write_register</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the value of an architectural x86 register of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vm_create.html'
+                               title='hypervisor::ffi::hv_vm_create'>hv_vm_create</a></td>
+                        <td class='docblock short'>
+                             <p>Creates a VM instance for the current Mach task</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vm_destroy.html'
+                               title='hypervisor::ffi::hv_vm_destroy'>hv_vm_destroy</a></td>
+                        <td class='docblock short'>
+                             <p>Destroys the VM instance associated with the current Mach task</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vm_map.html'
+                               title='hypervisor::ffi::hv_vm_map'>hv_vm_map</a></td>
+                        <td class='docblock short'>
+                             <p>Maps a region in the virtual address space of the current
+task into the guest physical address space of the VM</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vm_protect.html'
+                               title='hypervisor::ffi::hv_vm_protect'>hv_vm_protect</a></td>
+                        <td class='docblock short'>
+                             <p>Modifies the permissions of a region in the guest physical
+address space of the VM</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vm_sync_tsc.html'
+                               title='hypervisor::ffi::hv_vm_sync_tsc'>hv_vm_sync_tsc</a></td>
+                        <td class='docblock short'>
+                             <p>Synchronizes guest Timestamp-Counters (TSC) across all vCPUs</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vm_unmap.html'
+                               title='hypervisor::ffi::hv_vm_unmap'>hv_vm_unmap</a></td>
+                        <td class='docblock short'>
+                             <p>Unmaps a region in the guest physical address space of the VM</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vmx_read_capability.html'
+                               title='hypervisor::ffi::hv_vmx_read_capability'>hv_vmx_read_capability</a></td>
+                        <td class='docblock short'>
+                             <p>Returns the VMX capabilities of the host processor</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vmx_vcpu_read_vmcs.html'
+                               title='hypervisor::ffi::hv_vmx_vcpu_read_vmcs'>hv_vmx_vcpu_read_vmcs</a></td>
+                        <td class='docblock short'>
+                             <p>Returns the current value of a VMCS field of a vCPU</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vmx_vcpu_set_apic_address.html'
+                               title='hypervisor::ffi::hv_vmx_vcpu_set_apic_address'>hv_vmx_vcpu_set_apic_address</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the address of the guest APIC for a vCPU in the
+guest physical address space of the VM</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.hv_vmx_vcpu_write_vmcs.html'
+                               title='hypervisor::ffi::hv_vmx_vcpu_write_vmcs'>hv_vmx_vcpu_write_vmcs</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the value of a VMCS field of a vCPU</p>
+                        </td>
+                    </tr>
+                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.hv_gpaddr_t.html'
+                               title='hypervisor::ffi::hv_gpaddr_t'>hv_gpaddr_t</a></td>
+                        <td class='docblock short'>
+                             <p>Type of a guest physical address</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.hv_memory_flags_t.html'
+                               title='hypervisor::ffi::hv_memory_flags_t'>hv_memory_flags_t</a></td>
+                        <td class='docblock short'>
+                             <p>Guest physical memory region permissions for hv_vm_map()
+and hv_vm_protect()</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.hv_return_t.html'
+                               title='hypervisor::ffi::hv_return_t'>hv_return_t</a></td>
+                        <td class='docblock short'>
+                             <p>Hypervisor Framework return code</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.hv_uvaddr_t.html'
+                               title='hypervisor::ffi::hv_uvaddr_t'>hv_uvaddr_t</a></td>
+                        <td class='docblock short'>
+                             <p>Type of a user virtual address</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.hv_vcpuid_t.html'
+                               title='hypervisor::ffi::hv_vcpuid_t'>hv_vcpuid_t</a></td>
+                        <td class='docblock short'>
+                             <p>Type of a vCPU ID</p>
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.hv_vm_options_t.html'
+                               title='hypervisor::ffi::hv_vm_options_t'>hv_vm_options_t</a></td>
+                        <td class='docblock short'>
+                             <p>Options for hv_vcpu_create()</p>
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "hypervisor";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>
