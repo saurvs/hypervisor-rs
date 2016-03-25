@@ -7,6 +7,8 @@ It binds to the `Hypervisor` framework available on OS X Yosemite or newer,
 and exposes a safe Rust interface through the `hypervisor::osx` module, and an
 unsafe foreign function interface through the `hypervisor::osx::ffi` module.
 
+[Documentation](https://saurvs.github.io/hypervisor-rs/)
+
 ## Usage
 
 * Add the dependency ```hypervisor``` in your ```Cargo.toml```
