@@ -83,6 +83,15 @@ pub fn destory_vm() -> Error {
     })
 }
 
+/// Synchronizes the guest Timestamp-Counters (TSC) across all vCPUs
+///
+/// `tsc` Guest TSC value
+pub fn sync_tsc(tsc: u64) -> Error {
+    match_error_code(unsafe {
+        hv_vm_sync_tsc(tsc as uint64_t)
+    })
+}
+
 /// Virtual CPU
 #[allow(non_camel_case_types)]
 pub struct vCPU {
