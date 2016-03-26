@@ -92,6 +92,13 @@ pub fn sync_tsc(tsc: u64) -> Error {
     })
 }
 
+/// Forces an immediate VMEXIT of a set of vCPUs
+pub fn interrupt(vcpu_ids: &[u32]) -> Error {
+    match_error_code(unsafe {
+        hv_vcpu_interrupt(vcpu_ids.as_ptr(), vcpu_ids.len() as c_uint)
+    })
+}
+
 /// Virtual CPU
 #[allow(non_camel_case_types)]
 pub struct vCPU {
