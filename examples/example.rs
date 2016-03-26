@@ -1,7 +1,6 @@
 extern crate hypervisor;
 
 use hypervisor::osx::*;
-use hypervisor::osx::ffi::*;
 
 fn main() {
     // create a VM
@@ -13,9 +12,9 @@ fn main() {
     // run it
     vcpu.run();
 
-    // print time elapsed
+    // print time elapsed in nanoseconds
     println!("vcpu execution time: {:?}ns", vcpu.exec_time().unwrap());
-    // should print some finite value
+    // should print some random positive value every time
 
     // destroy the VM
     vcpu.destory();
