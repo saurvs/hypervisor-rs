@@ -1,20 +1,18 @@
 /*!
 Hypervisor API for OSX
 
-To use this, you need
+To use this library, you need
 
 * OS X Yosemite (10.10) or newer
-* an Intel processor with the VT-x feature set that includes Extended
-Page Tables (EPT) and Unrestricted Mode
 
+* an Intel processor with the VT-x feature set that includes Extended Page
+Tables (EPT) and Unrestricted Mode. To verify this, run and expect the following
+in your Terminal:
 
-To verify if the latter is true, run and expect the following in the Terminal:
-
-```shell
-    $ sysctl kern.hv_support
-    kern.hv_support: 1
-```
-
+  ```shell
+  $ sysctl kern.hv_support
+  kern.hv_support: 1
+  ```
 !*/
 //extern crate core;
 

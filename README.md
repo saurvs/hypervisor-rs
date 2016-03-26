@@ -9,6 +9,20 @@ unsafe foreign function interface through the `hypervisor::osx::ffi` module.
 
 [Documentation](https://saurvs.github.io/hypervisor-rs/)
 
+## Prerequisites
+
+To use this library, you need
+
+* OS X Yosemite (10.10) or newer
+
+* an Intel processor with the VT-x feature set that includes Extended Page
+Tables (EPT) and Unrestricted Mode. To verify this, run and expect the following
+in your Terminal:
+  ```shell
+  $ sysctl kern.hv_support
+  kern.hv_support: 1
+  ```
+
 ## Usage
 
 * Add the dependency ```hypervisor``` in your ```Cargo.toml```
@@ -48,4 +62,4 @@ unsafe foreign function interface through the `hypervisor::osx::ffi` module.
 
 ## Status
 
-More is yet to come.
+*A lot is left to be done.*
