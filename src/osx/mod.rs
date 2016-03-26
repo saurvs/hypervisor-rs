@@ -266,7 +266,7 @@ impl vCPU {
         })
     }
 
-    /// Invalidates the translation lookaside buffer (TLB) of a vCPU
+    /// Invalidates the translation lookaside buffer (TLB) of the vCPU
     pub fn invalidate_tlb(&self) -> Error {
         match_error_code(unsafe {
             hv_vcpu_invalidate_tlb(self.id as hv_vcpuid_t)
