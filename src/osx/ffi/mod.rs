@@ -107,21 +107,21 @@ pub enum hv_x86_reg_t {
 extern {
     /// Returns the current value of an architectural x86 register
     /// of a vCPU
-    pub fn hv_vcpu_read_register(vcpu: hv_vcpuid_t, reg: hv_x86_reg_t, value: *const uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_read_register(vcpu: hv_vcpuid_t, reg: hv_x86_reg_t, value: *mut uint64_t) -> hv_return_t;
 
     /// Sets the value of an architectural x86 register of a vCPU
-    pub fn hv_vcpu_write_register(vcpu: hv_vcpuid_t, reg: hv_x86_reg_t, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_write_register(vcpu: hv_vcpuid_t, reg: hv_x86_reg_t, value: uint64_t) -> hv_return_t;
 }
 
 // Accessing Floating Point (FP) State
 extern {
     /// Returns the current architectural x86 floating point and
     /// SIMD state of a vCPU
-    pub fn hv_vcpu_read_fpstate(vcpu: hv_vcpuid_t, buffer: *const c_void, size: size_t) -> hv_return_t;
+    pub fn hv_vcpu_read_fpstate(vcpu: hv_vcpuid_t, buffer: *mut c_void, size: size_t) -> hv_return_t;
 
     /// Sets the architectural x86 floating point and SIMD state of
     /// a vCPU
-    pub fn hv_vcpu_write_fpstate(vcpu: hv_vcpuid_t, buffer: *mut c_void, size: size_t) -> hv_return_t;
+    pub fn hv_vcpu_write_fpstate(vcpu: hv_vcpuid_t, buffer: *const c_void, size: size_t) -> hv_return_t;
 }
 
 // Accessing Machine Specific Registers (MSRs)
@@ -130,10 +130,10 @@ extern {
     pub fn hv_vcpu_enable_native_msr(vcpu: hv_vcpuid_t, msr: uint32_t, enable: bool) -> hv_return_t;
 
     /// Returns the current value of an MSR of a vCPU
-    pub fn hv_vcpu_read_msr(vcpu: hv_vcpuid_t, msr: uint32_t, value: *const uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_read_msr(vcpu: hv_vcpuid_t, msr: uint32_t, value: *mut uint64_t) -> hv_return_t;
 
     /// Set the value of an MSR of a vCPU
-    pub fn hv_vcpu_write_msr(vcpu: hv_vcpuid_t, msr: uint32_t, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_write_msr(vcpu: hv_vcpuid_t, msr: uint32_t, value: *const uint64_t) -> hv_return_t;
 }
 
 // Managing Timestamp-Counters (TSC)
@@ -186,13 +186,13 @@ pub enum hv_vmx_capability_t {
 // Managing Virtual Machine Control Structure (VMCS)
 extern {
     /// Returns the current value of a VMCS field of a vCPU
-    pub fn hv_vmx_vcpu_read_vmcs(vcpu: hv_vcpuid_t, field: uint32_t, value: *const uint64_t) -> hv_return_t;
+    pub fn hv_vmx_vcpu_read_vmcs(vcpu: hv_vcpuid_t, field: uint32_t, value: *mut uint64_t) -> hv_return_t;
 
     /// Sets the value of a VMCS field of a vCPU
     pub fn hv_vmx_vcpu_write_vmcs(vcpu: hv_vcpuid_t, field: uint32_t, value: uint64_t) -> hv_return_t;
 
     /// Returns the VMX capabilities of the host processor
-    pub fn hv_vmx_read_capability(field: hv_vmx_capability_t, value: *const uint64_t) -> hv_return_t;
+    pub fn hv_vmx_read_capability(field: hv_vmx_capability_t, value: *mut uint64_t) -> hv_return_t;
 
     /// Sets the address of the guest APIC for a vCPU in the
     /// guest physical address space of the VM
