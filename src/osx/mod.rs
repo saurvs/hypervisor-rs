@@ -135,6 +135,20 @@ impl vCPU {
         }
     }
 
+    /// Forces flushing of cached vCPU state
+    pub fn flush(&self) -> Error {
+        match_error_code(unsafe {
+            hv_vcpu_flush(self.id as hv_vcpuid_t)
+        })
+    }
+
+    /// Invalidates the translation lookaside buffer (TLB) of a vCPU
+    pub fn invalidate_tlb(&self) -> Error {
+        match_error_code(unsafe {
+            hv_vcpu_invalidate_tlb(self.id as hv_vcpuid_t)
+        })
+    }
+
 }
 
 impl fmt::Debug for vCPU {
