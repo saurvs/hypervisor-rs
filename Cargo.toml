@@ -5,6 +5,7 @@ authors = ["Saurav Sachidanand <sauravsachidanand@gmail.com>"]
 
 license = "MIT"
 repository = "https://www.github.com/saurvs/hypervisor-rs"
+documentation = "https://saurvs.github.io/hypervisor-rs"
 
 description = " Hardware-accelerated virtualization on OS X"
 keywords = ["hypervisor", "virtualization", "osx", "x86", "VT-x"]
