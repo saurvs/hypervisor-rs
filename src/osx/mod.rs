@@ -329,10 +329,83 @@ impl vCPU {
             hv_vcpu_write_register(self.id as hv_vcpuid_t, match_x86Reg(&reg), value as uint64_t)
         })
     }
+
+    /// Returns the current value of a VMCS field of the vCPU
+    pub fn read_vmcs(&self, field: u32) -> Result<u64, Error> {
+        let mut value: uint64_t = 0;
+
+        let error = match_error_code(unsafe {
+            hv_vmx_vcpu_read_vmcs(self.id as hv_vcpuid_t, field as uint32_t, &mut value)
+        });
+
+        match error {
+            Error::Success => Ok(value as u64),
+            _ => Err(error)
+        }
+    }
+
+    /// Sets the value of a VMCS field of the vCPU
+    pub fn write_vmcs(&self, field: u32, value: u64) -> Error {
+        match_error_code(unsafe {
+            hv_vmx_vcpu_write_vmcs(self.id as hv_vcpuid_t, field as uint32_t, value as uint64_t)
+        })
+    }
+
+    /// Sets the address of the guest APIC for the vCPU in the
+    /// guest physical address space of the VM
+    pub fn set_apic_addr(&self, gpa: u64) -> Error {
+        match_error_code(unsafe {
+            hv_vmx_vcpu_set_apic_address(self.id as hv_vcpuid_t, gpa as uint64_t)
+        })
+    }
+
 }
 
 impl fmt::Debug for vCPU {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "vCPU ID: {}", (*self).id)
+    }
+}
+
+/// VMX cabability
+#[allow(non_camel_case_types)]
+pub enum VMXCap {
+    /// Pin-based VMX capabilities
+    PINBASED                           = 0,
+    /// Primary proc-based VMX capabilities
+    PROCBASED                          = 1,
+    /// Secondary proc-based VMX capabilities
+    PROCBASED2                         = 2,
+    /// VM-entry VMX capabilities
+    ENTRY                              = 3,
+    /// VM-exit VMX capabilities
+    EXIT                               = 4,
+    /// VMX preemption timer frequency
+    PREEMPTION_TIMER                   = 32
+}
+
+#[allow(non_snake_case)]
+fn match_VMXCap(vmx_cap: &VMXCap) -> hv_vmx_capability_t {
+    match vmx_cap {
+        &VMXCap::PINBASED => hv_vmx_capability_t::HV_VMX_CAP_PINBASED,
+        &VMXCap::PROCBASED => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED,
+        &VMXCap::PROCBASED2 => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED2,
+        &VMXCap::ENTRY => hv_vmx_capability_t::HV_VMX_CAP_ENTRY,
+        &VMXCap::EXIT => hv_vmx_capability_t::HV_VMX_CAP_EXIT,
+        &VMXCap::PREEMPTION_TIMER => hv_vmx_capability_t::HV_VMX_CAP_PREEMPTION_TIMER,
+    }
+}
+
+/// Reads a VMX capability of the host processor
+pub fn read_vmx_cap(vmx_cap: &VMXCap) -> Result<u64, Error> {
+    let mut value: uint64_t = 0;
+
+    let error = match_error_code(unsafe {
+        hv_vmx_read_capability(match_VMXCap(&vmx_cap), &mut value)
+    });
+
+    match error {
+        Error::Success => Ok(value as u64),
+        _ => Err(error)
     }
 }
