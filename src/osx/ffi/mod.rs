@@ -170,17 +170,17 @@ extern {
 #[repr(C)]
 pub enum hv_vmx_capability_t {
     /// Pin-based VMX capabilities
-	HV_VMX_CAP_PINBASED                           = 0,
+    HV_VMX_CAP_PINBASED                           = 0,
     /// Primary proc-based VMX capabilities
-	HV_VMX_CAP_PROCBASED                          = 1,
+    HV_VMX_CAP_PROCBASED                          = 1,
     /// Secondary proc-based VMX capabilities
-	HV_VMX_CAP_PROCBASED2                         = 2,
+    HV_VMX_CAP_PROCBASED2                         = 2,
     /// VM-entry VMX capabilities
-	HV_VMX_CAP_ENTRY                              = 3,
+    HV_VMX_CAP_ENTRY                              = 3,
     /// VM-exit VMX capabilities
-	HV_VMX_CAP_EXIT                               = 4,
+    HV_VMX_CAP_EXIT                               = 4,
     /// VMX preemption timer frequency
-	HV_VMX_CAP_PREEMPTION_TIMER                   = 32
+    HV_VMX_CAP_PREEMPTION_TIMER                   = 32
 }
 
 // Managing Virtual Machine Control Structure (VMCS)
