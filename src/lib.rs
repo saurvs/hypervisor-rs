@@ -389,11 +389,11 @@ pub enum VMXCap {
 #[allow(non_snake_case)]
 fn match_VMXCap(vmx_cap: &VMXCap) -> hv_vmx_capability_t {
     match vmx_cap {
-        &VMXCap::PINBASED => hv_vmx_capability_t::HV_VMX_CAP_PINBASED,
-        &VMXCap::PROCBASED => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED,
-        &VMXCap::PROCBASED2 => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED2,
-        &VMXCap::ENTRY => hv_vmx_capability_t::HV_VMX_CAP_ENTRY,
-        &VMXCap::EXIT => hv_vmx_capability_t::HV_VMX_CAP_EXIT,
+        &VMXCap::PINBASED         => hv_vmx_capability_t::HV_VMX_CAP_PINBASED,
+        &VMXCap::PROCBASED        => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED,
+        &VMXCap::PROCBASED2       => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED2,
+        &VMXCap::ENTRY            => hv_vmx_capability_t::HV_VMX_CAP_ENTRY,
+        &VMXCap::EXIT             => hv_vmx_capability_t::HV_VMX_CAP_EXIT,
         &VMXCap::PREEMPTION_TIMER => hv_vmx_capability_t::HV_VMX_CAP_PREEMPTION_TIMER,
     }
 }
