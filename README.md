@@ -8,8 +8,8 @@
 virtual machines on OS X.
 
 It binds to the `Hypervisor` framework on OS X, and exposes a safe Rust
-interface through the `hypervisor::osx` module, and an unsafe foreign function
-interface through the `hypervisor::osx::ffi` module.
+interface through the `hypervisor` module, and an unsafe foreign function
+interface through the `hypervisor::ffi` module.
 
 [Documentation](https://saurvs.github.io/hypervisor-rs/)
 

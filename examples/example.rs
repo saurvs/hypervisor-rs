@@ -1,6 +1,6 @@
 extern crate hypervisor;
 
-use hypervisor::osx::*;
+use hypervisor::*;
 
 fn main() {
     // create a VM
