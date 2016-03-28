@@ -1,6 +1,6 @@
 [package]
 name = "hypervisor"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Saurav Sachidanand <sauravsachidanand@gmail.com>"]
 
 license = "MIT"
@@ -13,4 +13,4 @@ keywords = ["hypervisor", "virtualization", "osx", "x86", "VT-x"]
 build = "build.rs"
 
 [dependencies]
-libc = "0.2.7"
+libc = "0.2.8"
