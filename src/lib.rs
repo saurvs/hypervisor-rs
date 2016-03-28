@@ -256,6 +256,13 @@ impl vCPU {
         })
     }
 
+    /// Forces an immediate VMEXIT of the vCPU
+    pub fn interrupt(&self) -> Error {
+        match_error_code(unsafe {
+            hv_vcpu_interrupt(&(self.id), 2 as c_uint)
+        })
+    }
+
     /// Returns the cumulative execution time of the vCPU in nanoseconds
     pub fn exec_time(&self) -> Result<u64, Error> {
         let mut exec_time: uint64_t = 0;
