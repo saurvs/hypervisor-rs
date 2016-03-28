@@ -27,6 +27,19 @@ following in your Terminal:
   kern.hv_support: 1
   ```
 
+## Status
+- [x] Accessing x86 registers
+- [x] Accessing model-specific registers (MSRs)
+- [ ] Mapping segments of guest physical memory into guest physical address space of the VM
+- [x] Virtual CPUs
+  - [x] Executing and interrupting
+  - [x] Force flushing of cached state
+  - [x] Invalidating translation lookaside buffer (TLB)
+  - [x] Obtaining cumulative execution time
+  - [x] Synchronizing guest timestamp-counters (TSC)
+- [x] Accessing Virtual Machine Control Structures (VMCS)
+- [ ] Accessing Floating Point (FP) state
+
 ## Usage
 
 * Add the dependency ```hypervisor``` in your ```Cargo.toml```
