@@ -14,7 +14,6 @@ fn main() {
 
     // print time elapsed in nanoseconds
     println!("vcpu execution time: {:?}ns", vcpu.exec_time().unwrap());
-    // should print some random positive value every time
 
     // destroy the VM
     vcpu.destory();

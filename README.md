@@ -56,7 +56,6 @@ following in your Terminal:
 
   // print time elapsed in nanoseconds
   println!("vcpu execution time: {:?}ns", vcpu.exec_time().unwrap());
-  // should print some random positive value every time
 
   // destroy the virtual CPU
   vcpu.destory();
@@ -64,7 +63,3 @@ following in your Terminal:
   // destroy the VM
   destory_vm();
   ```
-
-## Status
-
-*A lot is left to be done.*
