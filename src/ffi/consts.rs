@@ -10,6 +10,11 @@ pub const HV_NO_RESOURCES: hv_return_t = 0xfae94005;
 pub const HV_NO_DEVICE: hv_return_t    = 0xfae94006;
 pub const HV_UNSUPPORTED: hv_return_t  = 0xfae9400f;
 
+// Guest physical memory region permissions for hv_vm_map() and hv_vm_protect()
+pub const HV_MEMORY_READ: uint64_t  = 1 << 0;
+pub const HV_MEMORY_WRITE: uint64_t = 1 << 1;
+pub const HV_MEMORY_EXEC: uint64_t  = 1 << 2;
+
 // Virtual Machine Control Structure (VMCS) Field IDs
 pub const VMCS_VPID: uint32_t                        = 0x00000000;
 pub const VMCS_CTRL_POSTED_INT_N_VECTOR: uint32_t    = 0x00000002;
