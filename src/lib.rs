@@ -95,7 +95,9 @@ pub fn sync_tsc(tsc: u64) -> Error {
 }
 
 /// Forces an immediate VMEXIT of a set of vCPUs
-pub fn interrupt(vcpu_ids: &[u32]) -> Error {
+///
+/// * `vcpu_ids` Array of vCPU IDs
+pub fn interrupt_vcpus(vcpu_ids: &[u32]) -> Error {
     match_error_code(unsafe {
         hv_vcpu_interrupt(vcpu_ids.as_ptr(), vcpu_ids.len() as c_uint)
     })
