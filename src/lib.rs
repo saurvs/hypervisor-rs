@@ -373,17 +373,17 @@ impl fmt::Debug for vCPU {
 #[allow(non_camel_case_types)]
 pub enum VMXCap {
     /// Pin-based VMX capabilities
-    PINBASED                           = 0,
+    PINBASED,
     /// Primary proc-based VMX capabilities
-    PROCBASED                          = 1,
+    PROCBASED,
     /// Secondary proc-based VMX capabilities
-    PROCBASED2                         = 2,
+    PROCBASED2,
     /// VM-entry VMX capabilities
-    ENTRY                              = 3,
+    ENTRY,
     /// VM-exit VMX capabilities
-    EXIT                               = 4,
+    EXIT,
     /// VMX preemption timer frequency
-    PREEMPTION_TIMER                   = 32
+    PREEMPTION_TIMER,
 }
 
 #[allow(non_snake_case)]
