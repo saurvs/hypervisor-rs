@@ -71,14 +71,14 @@ fn match_error_code(code: hv_return_t) -> Error {
     }
 }
 
-/// Creates a VM instance for the current task
+/// Creates a VM instance for the current Mach task
 pub fn create_vm() -> Error {
     match_error_code(unsafe {
         hv_vm_create(0)
     })
 }
 
-/// Destroys the VM instance associated with the current task
+/// Destroys the VM instance associated with the current Mach task
 pub fn destory_vm() -> Error {
     match_error_code(unsafe {
         hv_vm_destroy()

@@ -12,10 +12,10 @@ pub type hv_vm_options_t = uint64_t;
 
 // Creating and Destroying VM Instances
 extern {
-    /// Creates a VM instance for the current task
+    /// Creates a VM instance for the current Mach task
     pub fn hv_vm_create(flags: hv_vm_options_t) -> hv_return_t;
 
-    /// Destroys the VM instance associated with the current task
+    /// Destroys the VM instance associated with the current Mach task
     pub fn hv_vm_destroy() -> hv_return_t;
 }
 
