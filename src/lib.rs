@@ -1,11 +1,10 @@
-extern crate libc;
-extern crate core;
+/*!
+This is a Rust library that enables hardware-accelerated execution of
+virtual machines on OS X.
 
-#[allow(non_camel_case_types)]
-pub mod ffi;
-
-/**
-Hypervisor API for OSX
+It binds to the `Hypervisor` framework on OS X, and exposes a safe Rust
+interface through the `hypervisor` module, and an unsafe foreign function
+interface through the `hypervisor::ffi` module.
 
 To use this library, you need
 
@@ -19,7 +18,13 @@ in your Terminal:
   $ sysctl kern.hv_support
   kern.hv_support: 1
   ```
-**/
+!*/
+
+extern crate libc;
+extern crate core;
+
+#[allow(non_camel_case_types)]
+pub mod ffi;
 
 use self::core::fmt;
 use libc::*;
@@ -82,6 +87,57 @@ pub fn create_vm() -> Error {
 pub fn destory_vm() -> Error {
     match_error_code(unsafe {
         hv_vm_destroy()
+    })
+}
+
+/// Guest physical memory region permissions
+pub enum MemPerm {
+    /// Read
+    Read,
+    /// Write (implies read)
+    Write,
+    /// Execute
+    Exec,
+    /// Execute and write (implies read)
+    ExecAndWrite,
+    /// Execute and read
+    ExecAndRead
+}
+
+#[allow(non_snake_case)]
+pub fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
+    match mem_perm {
+        &MemPerm::Read         => HV_MEMORY_READ,
+        &MemPerm::Write        => HV_MEMORY_WRITE | HV_MEMORY_READ,
+        &MemPerm::Exec         => HV_MEMORY_EXEC,
+        &MemPerm::ExecAndWrite => HV_MEMORY_EXEC | HV_MEMORY_WRITE | HV_MEMORY_READ,
+        &MemPerm::ExecAndRead  => HV_MEMORY_EXEC | HV_MEMORY_READ,
+    }
+}
+
+/// Maps a region in the virtual address space of the current task into the guest physical address
+/// space of the virutal machine
+pub fn map_mem(mem: &[u32], gpa: u64, mem_perm: &MemPerm) -> Error {
+    match_error_code(unsafe {
+        hv_vm_map(
+            mem.as_ptr() as *const c_void, gpa as hv_gpaddr_t, mem.len() as size_t,
+            match_MemPerm(mem_perm)
+        )
+    })
+}
+
+/// Unmaps a region in the guest physical address space of the virutal machine
+pub fn unmap_mem(gpa: u64, size: usize) -> Error {
+    match_error_code(unsafe {
+        hv_vm_unmap(gpa as hv_gpaddr_t, size as size_t)
+    })
+}
+
+/// Modifies the permissions of a region in the guest physical address space of the virtual
+/// machine
+pub fn protect_mem(gpa: u64, size: usize, mem_perm: &MemPerm) -> Error {
+    match_error_code(unsafe {
+        hv_vm_protect(gpa as hv_gpaddr_t, size as size_t, match_MemPerm(mem_perm))
     })
 }
 
