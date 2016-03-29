@@ -8,7 +8,7 @@ interface through the `hypervisor::ffi` module.
 
 To use this library, you need
 
-* OS X Yosemite (10.10) or newer
+* OS X Yosemite (10.10), or newer
 
 * an Intel processor with the VT-x feature set that includes Extended Page
 Tables (EPT) and Unrestricted Mode. To verify this, run and expect the following
@@ -54,25 +54,25 @@ impl fmt::Debug for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Error::Success => write!(f, "Success"),
-            Error::Error => write!(f, "Error"),
-            Error::Busy => write!(f, "Busy"),
-            Error::BadArg => write!(f, "Bad argument"),
-            Error::NoRes => write!(f, "No resources"),
-            Error::NoDev => write!(f, "No device"),
-            Error::Unsupp => write!(f, "Unsupported"),
+            Error::Error   => write!(f, "Error"),
+            Error::Busy    => write!(f, "Busy"),
+            Error::BadArg  => write!(f, "Bad argument"),
+            Error::NoRes   => write!(f, "No resources"),
+            Error::NoDev   => write!(f, "No device"),
+            Error::Unsupp  => write!(f, "Unsupported"),
         }
     }
 }
 
 fn match_error_code(code: hv_return_t) -> Error {
     match code {
-        HV_SUCCESS => Error::Success,
-        HV_BUSY => Error::Busy,
+        HV_SUCCESS      => Error::Success,
+        HV_BUSY         => Error::Busy,
         HV_BAD_ARGUMENT => Error::BadArg,
         HV_NO_RESOURCES => Error::NoRes,
-        HV_NO_DEVICE => Error::NoDev,
-        HV_UNSUPPORTED => Error::Unsupp,
-        _ => Error::Error
+        HV_NO_DEVICE    => Error::NoDev,
+        HV_UNSUPPORTED  => Error::Unsupp,
+        _               => Error::Error
     }
 }
 
@@ -105,6 +105,7 @@ pub enum MemPerm {
 }
 
 #[allow(non_snake_case)]
+#[inline(always)]
 pub fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
     match mem_perm {
         &MemPerm::Read         => HV_MEMORY_READ,
@@ -224,6 +225,7 @@ pub enum x86Reg {
 }
 
 #[allow(non_snake_case)]
+#[inline(always)]
 fn match_x86Reg(reg_id: &x86Reg) -> hv_x86_reg_t {
     match reg_id {
         &x86Reg::RIP           => hv_x86_reg_t::HV_X86_RIP,
@@ -282,6 +284,7 @@ fn match_x86Reg(reg_id: &x86Reg) -> hv_x86_reg_t {
 }
 
 impl vCPU {
+
     /// Creates a vCPU instance for the current thread
     pub fn new() -> Result<vCPU, Error> {
         let mut vcpuid: hv_vcpuid_t = 0;
@@ -315,7 +318,7 @@ impl vCPU {
     /// Forces an immediate VMEXIT of the vCPU
     pub fn interrupt(&self) -> Error {
         match_error_code(unsafe {
-            hv_vcpu_interrupt(&(self.id), 2 as c_uint)
+            hv_vcpu_interrupt(&(self.id), 1 as c_uint)
         })
     }
 
@@ -358,9 +361,9 @@ impl vCPU {
     pub fn read_msr(&self, msr: u32) -> Result<u64, Error> {
         let mut value: uint64_t = 0;
 
-            let error = match_error_code(unsafe {
-                hv_vcpu_read_msr(self.id as hv_vcpuid_t, msr as uint32_t, &mut value)
-            });
+        let error = match_error_code(unsafe {
+            hv_vcpu_read_msr(self.id as hv_vcpuid_t, msr as uint32_t, &mut value)
+        });
 
         match error {
             Error::Success => Ok(value as u64),
@@ -451,24 +454,21 @@ pub enum VMXCap {
     PREEMPTION_TIMER,
 }
 
-#[allow(non_snake_case)]
-fn match_VMXCap(vmx_cap: &VMXCap) -> hv_vmx_capability_t {
-    match vmx_cap {
+/// Reads a VMX capability of the host processor
+pub fn read_vmx_cap(vmx_cap: &VMXCap) -> Result<u64, Error> {
+    let mut value: uint64_t = 0;
+
+    let cap = match vmx_cap {
         &VMXCap::PINBASED         => hv_vmx_capability_t::HV_VMX_CAP_PINBASED,
         &VMXCap::PROCBASED        => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED,
         &VMXCap::PROCBASED2       => hv_vmx_capability_t::HV_VMX_CAP_PROCBASED2,
         &VMXCap::ENTRY            => hv_vmx_capability_t::HV_VMX_CAP_ENTRY,
         &VMXCap::EXIT             => hv_vmx_capability_t::HV_VMX_CAP_EXIT,
         &VMXCap::PREEMPTION_TIMER => hv_vmx_capability_t::HV_VMX_CAP_PREEMPTION_TIMER,
-    }
-}
-
-/// Reads a VMX capability of the host processor
-pub fn read_vmx_cap(vmx_cap: &VMXCap) -> Result<u64, Error> {
-    let mut value: uint64_t = 0;
+    };
 
     let error = match_error_code(unsafe {
-        hv_vmx_read_capability(match_VMXCap(&vmx_cap), &mut value)
+        hv_vmx_read_capability(cap, &mut value)
     });
 
     match error {
