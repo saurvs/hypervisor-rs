@@ -323,7 +323,6 @@ impl vCPU {
 
     /// Returns the current value of an architectural x86 register
     /// of the vCPU
-
     pub fn read_register(&self, reg: &x86Reg) -> Result<u64, Error> {
         let mut value: uint64_t = 0;
 
