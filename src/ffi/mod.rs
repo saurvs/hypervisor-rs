@@ -46,71 +46,14 @@ extern {
     pub fn hv_vcpu_destroy(vcpu: hv_vcpuid_t) -> hv_return_t;
 }
 
-/// x86 architectural register IDs
-#[repr(C)]
-pub enum hv_x86_reg_t {
-	HV_X86_RIP,
-	HV_X86_RFLAGS,
-	HV_X86_RAX,
-	HV_X86_RCX,
-	HV_X86_RDX,
-	HV_X86_RBX,
-	HV_X86_RSI,
-	HV_X86_RDI,
-	HV_X86_RSP,
-	HV_X86_RBP,
-	HV_X86_R8,
-	HV_X86_R9,
-	HV_X86_R10,
-	HV_X86_R11,
-	HV_X86_R12,
-	HV_X86_R13,
-	HV_X86_R14,
-	HV_X86_R15,
-	HV_X86_CS,
-	HV_X86_SS,
-	HV_X86_DS,
-	HV_X86_ES,
-	HV_X86_FS,
-	HV_X86_GS,
-	HV_X86_IDT_BASE,
-	HV_X86_IDT_LIMIT,
-	HV_X86_GDT_BASE,
-	HV_X86_GDT_LIMIT,
-	HV_X86_LDTR,
-	HV_X86_LDT_BASE,
-	HV_X86_LDT_LIMIT,
-	HV_X86_LDT_AR,
-	HV_X86_TR,
-	HV_X86_TSS_BASE,
-	HV_X86_TSS_LIMIT,
-	HV_X86_TSS_AR,
-	HV_X86_CR0,
-	HV_X86_CR1,
-	HV_X86_CR2,
-	HV_X86_CR3,
-	HV_X86_CR4,
-	HV_X86_DR0,
-	HV_X86_DR1,
-	HV_X86_DR2,
-	HV_X86_DR3,
-	HV_X86_DR4,
-	HV_X86_DR5,
-	HV_X86_DR6,
-	HV_X86_DR7,
-	HV_X86_TPR,
-	HV_X86_XCR0,
-	HV_X86_REGISTERS_MAX,
-}
-
 // Accessing Registers
 extern {
     /// Returns the current value of an architectural x86 register
     /// of a vCPU
-    pub fn hv_vcpu_read_register(vcpu: hv_vcpuid_t, reg: hv_x86_reg_t, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_read_register(vcpu: hv_vcpuid_t, reg: super::x86Reg, value: *mut uint64_t) -> hv_return_t;
 
     /// Sets the value of an architectural x86 register of a vCPU
-    pub fn hv_vcpu_write_register(vcpu: hv_vcpuid_t, reg: hv_x86_reg_t, value: uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_write_register(vcpu: hv_vcpuid_t, reg: super::x86Reg, value: uint64_t) -> hv_return_t;
 }
 
 // Accessing Floating Point (FP) State
@@ -166,23 +109,6 @@ extern {
     pub fn hv_vm_protect(gpa: hv_gpaddr_t, size: size_t, flags: hv_memory_flags_t) -> hv_return_t;
 }
 
-/// Enum type of VMX cabability fields
-#[repr(C)]
-pub enum hv_vmx_capability_t {
-    /// Pin-based VMX capabilities
-    HV_VMX_CAP_PINBASED                           = 0,
-    /// Primary proc-based VMX capabilities
-    HV_VMX_CAP_PROCBASED                          = 1,
-    /// Secondary proc-based VMX capabilities
-    HV_VMX_CAP_PROCBASED2                         = 2,
-    /// VM-entry VMX capabilities
-    HV_VMX_CAP_ENTRY                              = 3,
-    /// VM-exit VMX capabilities
-    HV_VMX_CAP_EXIT                               = 4,
-    /// VMX preemption timer frequency
-    HV_VMX_CAP_PREEMPTION_TIMER                   = 32
-}
-
 // Managing Virtual Machine Control Structure (VMCS)
 extern {
     /// Returns the current value of a VMCS field of a vCPU
@@ -192,7 +118,7 @@ extern {
     pub fn hv_vmx_vcpu_write_vmcs(vcpu: hv_vcpuid_t, field: uint32_t, value: uint64_t) -> hv_return_t;
 
     /// Returns the VMX capabilities of the host processor
-    pub fn hv_vmx_read_capability(field: hv_vmx_capability_t, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vmx_read_capability(field: super::VMXCap, value: *mut uint64_t) -> hv_return_t;
 
     /// Sets the address of the guest APIC for a vCPU in the
     /// guest physical address space of the VM
