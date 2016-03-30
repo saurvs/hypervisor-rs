@@ -33,9 +33,9 @@ following in your Terminal:
 - [x] Mapping guest physical memory segments into guest physical address space
 - [x] Virtual CPUs
   - [x] Executing and interrupting
-  - [x] Force flushing of cached state
+  - [x] Force flushing cached state
   - [x] Invalidating translation lookaside buffer (TLB)
+  - [x] Accessing floating point (FP) and SIMD state
   - [x] Obtaining cumulative execution time
   - [x] Synchronizing guest timestamp-counters (TSC)
-- [x] Accessing Virtual Machine Control Structures (VMCS)
-- [x] Accessing Floating Point (FP) state
+- [x] Accessing fields of Virtual Machine Control Structures (VMCS)
