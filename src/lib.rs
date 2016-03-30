@@ -372,6 +372,22 @@ impl vCPU {
         })
     }
 
+    /// Reads the current architectural x86 floating point and SIMD state of the vCPU
+    pub fn read_fpstate(&self, buffer: &mut [u8]) -> Error {
+        match_error_code(unsafe {
+            hv_vcpu_read_fpstate(self.id as hv_vcpuid_t, buffer.as_mut_ptr() as *mut c_void,
+            buffer.len() as size_t)
+        })
+    }
+
+    /// Sets the architectural x86 floating point and SIMD state of the vCPU
+    pub fn write_fpstate(&self, buffer: &[u8]) -> Error {
+        match_error_code(unsafe {
+            hv_vcpu_write_fpstate(self.id as hv_vcpuid_t, buffer.as_ptr() as *const c_void,
+            buffer.len() as size_t)
+        })
+    }
+
 }
 
 impl fmt::Debug for vCPU {
