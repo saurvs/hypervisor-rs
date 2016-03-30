@@ -106,7 +106,7 @@ pub enum MemPerm {
 
 #[allow(non_snake_case)]
 #[inline(always)]
-pub fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
+fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
     match mem_perm {
         &MemPerm::Read         => HV_MEMORY_READ,
         &MemPerm::Write        => HV_MEMORY_WRITE | HV_MEMORY_READ,
@@ -116,8 +116,8 @@ pub fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
     }
 }
 
-/// Maps a region in the virtual address space of the current task into the guest physical address
-/// space of the virutal machine
+/// Maps a region in the virtual address space of the current Mach task into the guest physical
+/// address space of the virutal machine
 pub fn map_mem(mem: &[u32], gpa: u64, mem_perm: &MemPerm) -> Error {
     match_error_code(unsafe {
         hv_vm_map(
