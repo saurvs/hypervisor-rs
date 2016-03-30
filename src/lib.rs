@@ -118,7 +118,7 @@ fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
 
 /// Maps a region in the virtual address space of the current Mach task into the guest physical
 /// address space of the virutal machine
-pub fn map_mem(mem: &[u32], gpa: u64, mem_perm: &MemPerm) -> Error {
+pub fn map_mem(mem: &[u8], gpa: u64, mem_perm: &MemPerm) -> Error {
     match_error_code(unsafe {
         hv_vm_map(
             mem.as_ptr() as *const c_void, gpa as hv_gpaddr_t, mem.len() as size_t,
