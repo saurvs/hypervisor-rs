@@ -38,4 +38,4 @@ following in your Terminal:
   - [x] Obtaining cumulative execution time
   - [x] Synchronizing guest timestamp-counters (TSC)
 - [x] Accessing Virtual Machine Control Structures (VMCS)
-- [ ] Accessing Floating Point (FP) state
+- [x] Accessing Floating Point (FP) state
