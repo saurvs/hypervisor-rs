@@ -45,7 +45,7 @@ following in your Terminal:
 * Add the dependency ```hypervisor``` in your ```Cargo.toml```
   ```toml
   [dependencies]
-  hypervisor = "0.0.4"
+  hypervisor = "0.0.5"
   ```
 
 * Include the crate ```hypervisor``` in your code
