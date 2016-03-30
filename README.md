@@ -30,7 +30,7 @@ following in your Terminal:
 ## Status
 - [x] Accessing x86 registers
 - [x] Accessing model-specific registers (MSRs)
-- [ ] Mapping guest physical memory segments into guest physical address space
+- [x] Mapping guest physical memory segments into guest physical address space
 - [x] Virtual CPUs
   - [x] Executing and interrupting
   - [x] Force flushing of cached state
@@ -45,7 +45,7 @@ following in your Terminal:
 * Add the dependency ```hypervisor``` in your ```Cargo.toml```
   ```toml
   [dependencies]
-  hypervisor = "0.0.3"
+  hypervisor = "0.0.4"
   ```
 
 * Include the crate ```hypervisor``` in your code
