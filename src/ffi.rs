@@ -2,7 +2,23 @@
 
 use libc::*;
 
-pub mod consts;
+pub const HV_VM_DEFAULT: uint64_t = 0 << 0;
+
+pub const HV_VCPU_DEFAULT: uint64_t = 0;
+
+// Hypervisor Framework return codes
+pub const HV_SUCCESS     : hv_return_t = 0;
+pub const HV_ERROR       : hv_return_t = 0xfae94001;
+pub const HV_BUSY        : hv_return_t = 0xfae94002;
+pub const HV_BAD_ARGUMENT: hv_return_t = 0xfae94003;
+pub const HV_NO_RESOURCES: hv_return_t = 0xfae94005;
+pub const HV_NO_DEVICE   : hv_return_t = 0xfae94006;
+pub const HV_UNSUPPORTED : hv_return_t = 0xfae9400f;
+
+// Guest physical memory region permissions for hv_vm_map() and hv_vm_protect()
+pub const HV_MEMORY_READ : uint64_t = 1 << 0;
+pub const HV_MEMORY_WRITE: uint64_t = 1 << 1;
+pub const HV_MEMORY_EXEC : uint64_t = 1 << 2;
 
 /// Hypervisor Framework return code
 pub type hv_return_t = uint32_t;

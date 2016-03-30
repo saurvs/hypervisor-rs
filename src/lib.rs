@@ -25,12 +25,12 @@ extern crate core;
 
 #[allow(non_camel_case_types)]
 pub mod ffi;
+pub mod consts;
 
 use self::core::fmt;
 use libc::*;
 
 use self::ffi::*;
-use self::ffi::consts::*;
 
 /// Error returned after every call
 pub enum Error {
@@ -79,7 +79,7 @@ fn match_error_code(code: hv_return_t) -> Error {
 /// Creates a VM instance for the current Mach task
 pub fn create_vm() -> Error {
     match_error_code(unsafe {
-        hv_vm_create(0)
+        hv_vm_create(HV_VM_DEFAULT)
     })
 }
 
@@ -233,7 +233,7 @@ impl vCPU {
         let mut vcpuid: hv_vcpuid_t = 0;
 
         let error = match_error_code(unsafe {
-            hv_vcpu_create(&mut vcpuid, 0)
+            hv_vcpu_create(&mut vcpuid, HV_VCPU_DEFAULT)
         });
 
         match error {
