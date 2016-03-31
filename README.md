@@ -7,7 +7,7 @@
 `hypervisor` is a Rust library that enables hardware-accelerated execution of
 virtual machines on OS X.
 
-It binds to the `Hypervisor` framework on OS X, and exposes a safe Rust
+It binds to the [Hypervisor](https://developer.apple.com/library/mac/documentation/Hypervisor/Reference/Hypervisor_Reference/index.html#//apple_ref/doc/uid/TP40016756) framework on OS X, and exposes a safe Rust
 interface through the `hypervisor` module, and an unsafe foreign function
 interface through the `hypervisor::ffi` module.
 
