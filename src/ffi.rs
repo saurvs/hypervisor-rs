@@ -1,30 +1,44 @@
+/*
+Copyright (c) 2016 Saurav Sachidanand
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 //! Bindings to the Hypervisor Framework
 
 use libc::*;
 
-pub const HV_VM_DEFAULT: uint64_t = 0 << 0;
-
-pub const HV_VCPU_DEFAULT: uint64_t = 0;
-
-// Hypervisor Framework return codes
-pub const HV_SUCCESS     : hv_return_t = 0;
-pub const HV_ERROR       : hv_return_t = 0xfae94001;
-pub const HV_BUSY        : hv_return_t = 0xfae94002;
-pub const HV_BAD_ARGUMENT: hv_return_t = 0xfae94003;
-pub const HV_NO_RESOURCES: hv_return_t = 0xfae94005;
-pub const HV_NO_DEVICE   : hv_return_t = 0xfae94006;
-pub const HV_UNSUPPORTED : hv_return_t = 0xfae9400f;
-
-// Guest physical memory region permissions for hv_vm_map() and hv_vm_protect()
-pub const HV_MEMORY_READ : uint64_t = 1 << 0;
-pub const HV_MEMORY_WRITE: uint64_t = 1 << 1;
-pub const HV_MEMORY_EXEC : uint64_t = 1 << 2;
-
 /// Hypervisor Framework return code
 pub type hv_return_t = uint32_t;
 
+// Hypervisor Framework return codes
+pub const HV_SUCCESS      : hv_return_t = 0;
+pub const HV_ERROR        : hv_return_t = 0xfae94001;
+pub const HV_BUSY         : hv_return_t = 0xfae94002;
+pub const HV_BAD_ARGUMENT : hv_return_t = 0xfae94003;
+pub const HV_NO_RESOURCES : hv_return_t = 0xfae94005;
+pub const HV_NO_DEVICE    : hv_return_t = 0xfae94006;
+pub const HV_UNSUPPORTED  : hv_return_t = 0xfae9400f;
+
 /// Options for hv_vcpu_create()
 pub type hv_vm_options_t = uint64_t;
+pub const HV_VM_DEFAULT: hv_vm_options_t = 0 << 0;
 
 // Creating and Destroying VM Instances
 extern {
@@ -37,6 +51,9 @@ extern {
 
 /// Type of a vCPU ID
 pub type hv_vcpuid_t = c_uint;
+
+// Option for hv_vcpu_create()
+pub const HV_VCPU_DEFAULT: uint64_t = 0;
 
 // Creating and Managing vCPU Instances
 extern {
@@ -110,6 +127,11 @@ pub type hv_memory_flags_t = uint64_t;
 
 /// Type of a guest physical address
 pub type hv_gpaddr_t = uint64_t;
+
+// Guest physical memory region permissions for hv_vm_map() and hv_vm_protect()
+pub const HV_MEMORY_READ : hv_memory_flags_t = 1 << 0;
+pub const HV_MEMORY_WRITE: hv_memory_flags_t = 1 << 1;
+pub const HV_MEMORY_EXEC : hv_memory_flags_t = 1 << 2;
 
 // Managing Memory Regions
 extern {
