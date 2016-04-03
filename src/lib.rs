@@ -21,8 +21,8 @@ THE SOFTWARE.
 */
 
 /*!
-This is a Rust library that enables hardware-accelerated execution of
-virtual machines on OS X.
+This is a Rust library that taps into functionality that enables
+hardware-accelerated execution of virtual machines on OS X.
 
 It binds to the `Hypervisor` framework on OS X, and exposes a safe Rust
 interface through the `hypervisor` module, and an unsafe foreign function
