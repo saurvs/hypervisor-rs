@@ -107,7 +107,7 @@ pub fn create_vm() -> Error {
 }
 
 /// Destroys the VM instance associated with the current Mach task
-pub fn destory_vm() -> Error {
+pub fn destroy_vm() -> Error {
     match_error_code(unsafe {
         hv_vm_destroy()
     })
@@ -268,7 +268,7 @@ impl vCPU {
     }
 
     /// Destroys the vCPU instance associated with the current thread
-    pub fn destory(&self) -> Error {
+    pub fn destroy(&self) -> Error {
         match_error_code(unsafe {
             hv_vcpu_destroy(self.id as hv_vcpuid_t)
         })
