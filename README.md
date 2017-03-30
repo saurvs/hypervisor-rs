@@ -1,4 +1,4 @@
-# hypervisor-rs [![](http://meritbadge.herokuapp.com/hypervisor)] (https://crates.io/crates/hypervisor) [![](https://img.shields.io/badge/license-MIT-blue.svg)] (https://github.com/saurvs/hypervisor-rs/blob/master/LICENSE.md)
+# hypervisor-rs [![](http://meritbadge.herokuapp.com/hypervisor)](https://crates.io/crates/hypervisor) [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/saurvs/hypervisor-rs/blob/master/LICENSE.md)
 
 `hypervisor` is a Rust library that taps into functionality that enables hardware-accelerated execution of
 virtual machines on OS X.
