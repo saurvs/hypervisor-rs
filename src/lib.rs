@@ -55,6 +55,7 @@ use libc::*;
 use self::ffi::*;
 
 /// Error returned after every call
+#[derive(Clone)]
 pub enum Error {
     /// Success
     Success,
@@ -87,27 +88,27 @@ impl fmt::Debug for Error {
 }
 
 // Returns an Error for a hv_return_t
-fn match_error_code(code: hv_return_t) -> Error {
+fn match_error_code(code: hv_return_t) -> Result<(),Error> {
     match code {
-        HV_SUCCESS      => Error::Success,
-        HV_BUSY         => Error::Busy,
-        HV_BAD_ARGUMENT => Error::BadArg,
-        HV_NO_RESOURCES => Error::NoRes,
-        HV_NO_DEVICE    => Error::NoDev,
-        HV_UNSUPPORTED  => Error::Unsupp,
-        _               => Error::Error
+        HV_SUCCESS      => Ok(()),
+        HV_BUSY         => Err(Error::Busy),
+        HV_BAD_ARGUMENT => Err(Error::BadArg),
+        HV_NO_RESOURCES => Err(Error::NoRes),
+        HV_NO_DEVICE    => Err(Error::NoDev),
+        HV_UNSUPPORTED  => Err(Error::Unsupp),
+        _               => Err(Error::Error)
     }
 }
 
 /// Creates a VM instance for the current Mach task
-pub fn create_vm() -> Error {
+pub fn create_vm() -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vm_create(HV_VM_DEFAULT)
     })
 }
 
 /// Destroys the VM instance associated with the current Mach task
-pub fn destroy_vm() -> Error {
+pub fn destroy_vm() -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vm_destroy()
     })
@@ -141,7 +142,7 @@ fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
 
 /// Maps a region in the virtual address space of the current Mach task into the guest physical
 /// address space of the virutal machine
-pub fn map_mem(mem: &[u8], gpa: u64, mem_perm: &MemPerm) -> Error {
+pub fn map_mem(mem: &[u8], gpa: u64, mem_perm: &MemPerm) -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vm_map(
             mem.as_ptr() as *const c_void, gpa as hv_gpaddr_t, mem.len() as size_t,
@@ -151,7 +152,7 @@ pub fn map_mem(mem: &[u8], gpa: u64, mem_perm: &MemPerm) -> Error {
 }
 
 /// Unmaps a region in the guest physical address space of the virutal machine
-pub fn unmap_mem(gpa: u64, size: usize) -> Error {
+pub fn unmap_mem(gpa: u64, size: usize) -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vm_unmap(gpa as hv_gpaddr_t, size as size_t)
     })
@@ -159,7 +160,7 @@ pub fn unmap_mem(gpa: u64, size: usize) -> Error {
 
 /// Modifies the permissions of a region in the guest physical address space of the virtual
 /// machine
-pub fn protect_mem(gpa: u64, size: usize, mem_perm: &MemPerm) -> Error {
+pub fn protect_mem(gpa: u64, size: usize, mem_perm: &MemPerm) -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vm_protect(gpa as hv_gpaddr_t, size as size_t, match_MemPerm(mem_perm))
     })
@@ -168,7 +169,7 @@ pub fn protect_mem(gpa: u64, size: usize, mem_perm: &MemPerm) -> Error {
 /// Synchronizes the guest Timestamp-Counters (TSC) across all vCPUs
 ///
 /// * `tsc` Guest TSC value
-pub fn sync_tsc(tsc: u64) -> Error {
+pub fn sync_tsc(tsc: u64) -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vm_sync_tsc(tsc as uint64_t)
     })
@@ -177,7 +178,7 @@ pub fn sync_tsc(tsc: u64) -> Error {
 /// Forces an immediate VMEXIT of a set of vCPUs
 ///
 /// * `vcpu_ids` Array of vCPU IDs
-pub fn interrupt_vcpus(vcpu_ids: &[u32]) -> Error {
+pub fn interrupt_vcpus(vcpu_ids: &[u32]) -> Result<(),Error> {
     match_error_code(unsafe {
         hv_vcpu_interrupt(vcpu_ids.as_ptr(), vcpu_ids.len() as c_uint)
     })
@@ -255,34 +256,31 @@ impl vCPU {
     pub fn new() -> Result<vCPU, Error> {
         let mut vcpuid: hv_vcpuid_t = 0;
 
-        let error = match_error_code(unsafe {
+        match_error_code(unsafe {
             hv_vcpu_create(&mut vcpuid, HV_VCPU_DEFAULT)
-        });
+        })?;
 
-        match error {
-            Error::Success => Ok(vCPU {
-                id: vcpuid as u32
-            }),
-            _ => Err(error)
-        }
+        Ok(vCPU {
+            id: vcpuid as u32
+        })
     }
 
     /// Destroys the vCPU instance associated with the current thread
-    pub fn destroy(&self) -> Error {
+    pub fn destroy(&self) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_destroy(self.id as hv_vcpuid_t)
         })
     }
 
     /// Executes the vCPU
-    pub fn run(&self) -> Error {
+    pub fn run(&self) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_run(self.id as hv_vcpuid_t)
         })
     }
 
     /// Forces an immediate VMEXIT of the vCPU
-    pub fn interrupt(&self) -> Error {
+    pub fn interrupt(&self) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_interrupt(&(self.id), 1 as c_uint)
         })
@@ -294,30 +292,27 @@ impl vCPU {
 
         let error = match_error_code(unsafe {
             hv_vcpu_get_exec_time(self.id, &mut exec_time)
-        });
+        })?;
 
-        match error {
-            Error::Success => Ok(exec_time as u64),
-            _ => Err(error)
-        }
+		Ok(exec_time as u64)
     }
 
     /// Forces flushing of cached vCPU state
-    pub fn flush(&self) -> Error {
+    pub fn flush(&self) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_flush(self.id as hv_vcpuid_t)
         })
     }
 
     /// Invalidates the translation lookaside buffer (TLB) of the vCPU
-    pub fn invalidate_tlb(&self) -> Error {
+    pub fn invalidate_tlb(&self) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_invalidate_tlb(self.id as hv_vcpuid_t)
         })
     }
 
     /// Enables an MSR to be used natively by the VM
-    pub fn enable_native_msr(&self, msr: u32, enable: bool) -> Error {
+    pub fn enable_native_msr(&self, msr: u32, enable: bool) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_enable_native_msr(self.id as hv_vcpuid_t, msr as uint32_t, enable)
         })
@@ -329,16 +324,13 @@ impl vCPU {
 
         let error = match_error_code(unsafe {
             hv_vcpu_read_msr(self.id as hv_vcpuid_t, msr as uint32_t, &mut value)
-        });
+        })?;
 
-        match error {
-            Error::Success => Ok(value as u64),
-            _ => Err(error)
-        }
+        Ok(value as u64)
     }
 
     /// Set the value of an MSR of the vCPU
-    pub fn write_msr(&self, msr: u32, value: u64) -> Error {
+    pub fn write_msr(&self, msr: u32, value: u64) -> Result<(),Error> {
         match_error_code(unsafe {
             hv_vcpu_write_msr(self.id as hv_vcpuid_t, msr as uint32_t, &(value as uint64_t))
         })
@@ -349,18 +341,15 @@ impl vCPU {
     pub fn read_register(&self, reg: &x86Reg) -> Result<u64, Error> {
         let mut value: uint64_t = 0;
 
-        let error = match_error_code(unsafe {
+        match_error_code(unsafe {
             hv_vcpu_read_register(self.id as hv_vcpuid_t, (*reg).clone(), &mut value)
-        });
+        })?;
 
-        match error {
-            Error::Success => Ok(value as u64),
-            _ => Err(error)
-        }
+        Ok(value as u64)
     }
 
     /// Sets the value of an architectural x86 register of the vCPU
-    pub fn write_register(&self, reg: &x86Reg, value: u64) -> Error {
+    pub fn write_register(&self, reg: &x86Reg, value: u64) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_write_register(self.id as hv_vcpuid_t, (*reg).clone(), value as uint64_t)
         })
@@ -370,18 +359,15 @@ impl vCPU {
     pub fn read_vmcs(&self, field: u32) -> Result<u64, Error> {
         let mut value: uint64_t = 0;
 
-        let error = match_error_code(unsafe {
+        match_error_code(unsafe {
             hv_vmx_vcpu_read_vmcs(self.id as hv_vcpuid_t, field as uint32_t, &mut value)
-        });
+        })?;
 
-        match error {
-            Error::Success => Ok(value as u64),
-            _ => Err(error)
-        }
+        Ok(value as u64)
     }
 
     /// Sets the value of a VMCS field of the vCPU
-    pub fn write_vmcs(&self, field: u32, value: u64) -> Error {
+    pub fn write_vmcs(&self, field: u32, value: u64) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vmx_vcpu_write_vmcs(self.id as hv_vcpuid_t, field as uint32_t, value as uint64_t)
         })
@@ -389,14 +375,14 @@ impl vCPU {
 
     /// Sets the address of the guest APIC for the vCPU in the
     /// guest physical address space of the VM
-    pub fn set_apic_addr(&self, gpa: u64) -> Error {
+    pub fn set_apic_addr(&self, gpa: u64) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vmx_vcpu_set_apic_address(self.id as hv_vcpuid_t, gpa as uint64_t)
         })
     }
 
     /// Reads the current architectural x86 floating point and SIMD state of the vCPU
-    pub fn read_fpstate(&self, buffer: &mut [u8]) -> Error {
+    pub fn read_fpstate(&self, buffer: &mut [u8]) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_read_fpstate(self.id as hv_vcpuid_t, buffer.as_mut_ptr() as *mut c_void,
             buffer.len() as size_t)
@@ -404,7 +390,7 @@ impl vCPU {
     }
 
     /// Sets the architectural x86 floating point and SIMD state of the vCPU
-    pub fn write_fpstate(&self, buffer: &[u8]) -> Error {
+    pub fn write_fpstate(&self, buffer: &[u8]) -> Result<(), Error> {
         match_error_code(unsafe {
             hv_vcpu_write_fpstate(self.id as hv_vcpuid_t, buffer.as_ptr() as *const c_void,
             buffer.len() as size_t)
@@ -442,12 +428,9 @@ pub enum VMXCap {
 pub fn read_vmx_cap(vmx_cap: &VMXCap) -> Result<u64, Error> {
     let mut value: uint64_t = 0;
 
-    let error = match_error_code(unsafe {
+    match_error_code(unsafe {
         hv_vmx_read_capability((*vmx_cap).clone(), &mut value)
-    });
+    })?;
 
-    match error {
-        Error::Success => Ok(value as u64),
-        _ => Err(error)
-    }
+    Ok(value as u64)
 }
