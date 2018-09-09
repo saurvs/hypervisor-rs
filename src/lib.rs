@@ -407,7 +407,7 @@ impl fmt::Debug for vCPU {
 
 /// VMX cabability
 #[allow(non_camel_case_types)]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 #[repr(C)]
 pub enum VMXCap {
     /// Pin-based VMX capabilities
@@ -433,4 +433,17 @@ pub fn read_vmx_cap(vmx_cap: &VMXCap) -> Result<u64, Error> {
     })?;
 
     Ok(value as u64)
+}
+
+impl fmt::Display for VMXCap {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		match *self {
+			VMXCap::PINBASED => write!(f, "Pin-based VMX capabilities"),
+			VMXCap::PROCBASED => write!(f, "Primary proc-based VMX capabilities"),
+			VMXCap::PROCBASED2 => write!(f, "Secondary proc-based VMX capabilities"),
+			VMXCap::ENTRY => write!(f, "VM-entry VMX capabilities"),
+			VMXCap::EXIT => write!(f, "VM-exit VMX capabilities"),
+			VMXCap::PREEMPTION_TIMER => write!(f, "VMX preemption timer frequency")
+		}
+	}
 }
