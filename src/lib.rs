@@ -130,7 +130,7 @@ pub enum MemPerm {
 
 #[allow(non_snake_case)]
 #[inline(always)]
-fn match_MemPerm(mem_perm: &MemPerm) -> uint64_t {
+fn match_MemPerm(mem_perm: &MemPerm) -> u64 {
     match mem_perm {
         &MemPerm::Read         => HV_MEMORY_READ,
         &MemPerm::Write        => HV_MEMORY_WRITE | HV_MEMORY_READ,
@@ -171,7 +171,7 @@ pub fn protect_mem(gpa: u64, size: usize, mem_perm: &MemPerm) -> Result<(),Error
 /// * `tsc` Guest TSC value
 pub fn sync_tsc(tsc: u64) -> Result<(),Error> {
     match_error_code(unsafe {
-        hv_vm_sync_tsc(tsc as uint64_t)
+        hv_vm_sync_tsc(tsc as u64)
     })
 }
 
@@ -288,9 +288,9 @@ impl vCPU {
 
     /// Returns the cumulative execution time of the vCPU in nanoseconds
     pub fn exec_time(&self) -> Result<u64, Error> {
-        let mut exec_time: uint64_t = 0;
+        let mut exec_time: u64 = 0;
 
-        let error = match_error_code(unsafe {
+        let _error = match_error_code(unsafe {
             hv_vcpu_get_exec_time(self.id, &mut exec_time)
         })?;
 
@@ -314,16 +314,16 @@ impl vCPU {
     /// Enables an MSR to be used natively by the VM
     pub fn enable_native_msr(&self, msr: u32, enable: bool) -> Result<(), Error> {
         match_error_code(unsafe {
-            hv_vcpu_enable_native_msr(self.id as hv_vcpuid_t, msr as uint32_t, enable)
+            hv_vcpu_enable_native_msr(self.id as hv_vcpuid_t, msr as u32, enable)
         })
     }
 
     /// Returns the current value of an MSR of the vCPU
     pub fn read_msr(&self, msr: u32) -> Result<u64, Error> {
-        let mut value: uint64_t = 0;
+        let mut value: u64 = 0;
 
-        let error = match_error_code(unsafe {
-            hv_vcpu_read_msr(self.id as hv_vcpuid_t, msr as uint32_t, &mut value)
+        let _error = match_error_code(unsafe {
+            hv_vcpu_read_msr(self.id as hv_vcpuid_t, msr as u32, &mut value)
         })?;
 
         Ok(value as u64)
@@ -332,14 +332,14 @@ impl vCPU {
     /// Set the value of an MSR of the vCPU
     pub fn write_msr(&self, msr: u32, value: u64) -> Result<(),Error> {
         match_error_code(unsafe {
-            hv_vcpu_write_msr(self.id as hv_vcpuid_t, msr as uint32_t, &(value as uint64_t))
+            hv_vcpu_write_msr(self.id as hv_vcpuid_t, msr as u32, &(value as u64))
         })
     }
 
     /// Returns the current value of an architectural x86 register
     /// of the vCPU
     pub fn read_register(&self, reg: &x86Reg) -> Result<u64, Error> {
-        let mut value: uint64_t = 0;
+        let mut value: u64 = 0;
 
         match_error_code(unsafe {
             hv_vcpu_read_register(self.id as hv_vcpuid_t, (*reg).clone(), &mut value)
@@ -351,16 +351,16 @@ impl vCPU {
     /// Sets the value of an architectural x86 register of the vCPU
     pub fn write_register(&self, reg: &x86Reg, value: u64) -> Result<(), Error> {
         match_error_code(unsafe {
-            hv_vcpu_write_register(self.id as hv_vcpuid_t, (*reg).clone(), value as uint64_t)
+            hv_vcpu_write_register(self.id as hv_vcpuid_t, (*reg).clone(), value as u64)
         })
     }
 
     /// Returns the current value of a VMCS field of the vCPU
     pub fn read_vmcs(&self, field: u32) -> Result<u64, Error> {
-        let mut value: uint64_t = 0;
+        let mut value: u64 = 0;
 
         match_error_code(unsafe {
-            hv_vmx_vcpu_read_vmcs(self.id as hv_vcpuid_t, field as uint32_t, &mut value)
+            hv_vmx_vcpu_read_vmcs(self.id as hv_vcpuid_t, field as u32, &mut value)
         })?;
 
         Ok(value as u64)
@@ -369,7 +369,7 @@ impl vCPU {
     /// Sets the value of a VMCS field of the vCPU
     pub fn write_vmcs(&self, field: u32, value: u64) -> Result<(), Error> {
         match_error_code(unsafe {
-            hv_vmx_vcpu_write_vmcs(self.id as hv_vcpuid_t, field as uint32_t, value as uint64_t)
+            hv_vmx_vcpu_write_vmcs(self.id as hv_vcpuid_t, field as u32, value as u64)
         })
     }
 
@@ -377,7 +377,7 @@ impl vCPU {
     /// guest physical address space of the VM
     pub fn set_apic_addr(&self, gpa: u64) -> Result<(), Error> {
         match_error_code(unsafe {
-            hv_vmx_vcpu_set_apic_address(self.id as hv_vcpuid_t, gpa as uint64_t)
+            hv_vmx_vcpu_set_apic_address(self.id as hv_vcpuid_t, gpa as u64)
         })
     }
 
@@ -426,7 +426,7 @@ pub enum VMXCap {
 
 /// Reads a VMX capability of the host processor
 pub fn read_vmx_cap(vmx_cap: &VMXCap) -> Result<u64, Error> {
-    let mut value: uint64_t = 0;
+    let mut value: u64 = 0;
 
     match_error_code(unsafe {
         hv_vmx_read_capability((*vmx_cap).clone(), &mut value)
