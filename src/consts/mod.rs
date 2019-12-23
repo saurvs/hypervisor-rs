@@ -27,6 +27,4 @@ pub mod vmx_cap;
 pub mod vmx_exit;
 pub mod irq;
 
-use libc::*;
-
-pub const VMX_BASIC_TRUE_CTLS: uint64_t = 1 << 55;
+pub const VMX_BASIC_TRUE_CTLS: u64= 1 << 55;
