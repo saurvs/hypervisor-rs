@@ -19,7 +19,8 @@ and fixes for the Intel API.
 - `entitlements.plist` and `scripts/run-signed.sh`, used as the cargo runner,
   to sign binaries with the `com.apple.security.hypervisor` entitlement.
 - `VMXCap` variants for the remaining capabilities in `hv_vmx.h`.
-- GitHub Actions CI on Apple silicon, Intel and Linux.
+- GitHub Actions CI on Apple silicon, Intel and Linux. The Intel runner
+  supports VT-x, so the x86_64 example and runtime test run a real guest there.
 
 ### Changed
 

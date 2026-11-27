@@ -26,12 +26,18 @@ jobs:
       - run: cargo clippy --all-targets -- -D warnings
       - name: Clippy (x86_64 cross-check)
         run: cargo clippy --all-targets --target x86_64-apple-darwin -- -D warnings
-      # The runner in .cargo/config.toml signs test binaries with the
-      # hypervisor entitlement. Hosted runners are VMs, so VM creation may be
-      # unavailable; the runtime tests then skip themselves.
+      # The runner in .cargo/config.toml signs binaries with the hypervisor
+      # entitlement. Hosted runners are VMs and may not offer nested
+      # virtualization: if the example can run a guest, the runtime tests
+      # must run too; otherwise they skip themselves.
+      - name: Run example (probes for the hypervisor)
+        run: |
+          if cargo run --example arm64_hello; then
+            echo "HYPERVISOR_REQUIRE_VM=1" >> "$GITHUB_ENV"
+          else
+            echo "::notice::Hypervisor.framework is not usable on this runner; runtime tests will skip"
+          fi
       - run: cargo test
-      - name: Run example (informational)
-        run: cargo run --example arm64_hello || echo "::notice::Hypervisor.framework is not usable on this runner"
       - name: Docs
         env:
           RUSTDOCFLAGS: -D warnings
@@ -64,9 +70,14 @@ jobs:
           rustup toolchain install stable --profile minimal --component clippy
           rustup default stable
       - run: cargo clippy --all-targets -- -D warnings
+      - name: Run example (probes for the hypervisor)
+        run: |
+          if cargo run --example x86_64_hello; then
+            echo "HYPERVISOR_REQUIRE_VM=1" >> "$GITHUB_ENV"
+          else
+            echo "::notice::Hypervisor.framework is not usable on this runner; runtime tests will skip"
+          fi
       - run: cargo test
-      - name: Run example (informational)
-        run: cargo run --example x86_64_hello || echo "::notice::Hypervisor.framework is not usable on this runner"
 
   other-platforms:
     name: Linux (crate is empty)
