@@ -13,6 +13,9 @@ keywords = ["hypervisor", "virtualization", "macos", "apple-silicon", "vmx"]
 categories = ["api-bindings", "os::macos-apis", "virtualization"]
 exclude = ["/.github", "/.cargo"]
 
+[target.'cfg(all(target_os = "macos", target_arch = "aarch64"))'.dependencies]
+libc = "0.2.155"
+
 [package.metadata.docs.rs]
 default-target = "aarch64-apple-darwin"
 targets = ["aarch64-apple-darwin", "x86_64-apple-darwin"]
