@@ -1,0 +1,7 @@
+# Sign test and example binaries with the hypervisor entitlement before
+# running them (see scripts/run-signed.sh).
+[target.aarch64-apple-darwin]
+runner = "scripts/run-signed.sh"
+
+[target.x86_64-apple-darwin]
+runner = "scripts/run-signed.sh"
