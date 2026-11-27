@@ -114,7 +114,7 @@ a vCPU from another thread, and one vCPU per thread.
 
 [`examples/x86_64_hello.rs`](examples/x86_64_hello.rs) configures the VMCS
 for a flat 32-bit guest, runs `mov eax, 0x90901234; hlt` and prints the
-registers. Note that `map_mem` needs page-aligned memory whose size is a
+registers (`rax = 0x90901234`, `rip = 0x5`); CI runs it on an Intel runner. Note that `map_mem` needs page-aligned memory whose size is a
 multiple of 4 KiB; a plain `Vec<u8>` is not page aligned.
 
 ## What is covered
