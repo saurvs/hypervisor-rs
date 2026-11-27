@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 (2026-11-27)
+
+- Repository and documentation links point to `github.com/sauravsc` after the GitHub account
+  was renamed from `saurvs`. No code changes.
+
 ## 0.1.0 (2026-11-27)
 
 The first release in ten years: Apple silicon support, a modern toolchain,

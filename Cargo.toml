@@ -1,12 +1,12 @@
 [package]
 name = "hypervisor"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Saurav Sachidanand <sauravsachidanand@gmail.com>"]
 edition = "2024"
 rust-version = "1.85"
 license = "MIT"
 description = "Safe Rust bindings to Apple's Hypervisor.framework (Apple silicon and Intel Macs)"
-repository = "https://github.com/saurvs/hypervisor-rs"
+repository = "https://github.com/sauravsc/hypervisor-rs"
 documentation = "https://docs.rs/hypervisor"
 readme = "README.md"
 keywords = ["hypervisor", "virtualization", "macos", "apple-silicon", "vmx"]

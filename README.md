@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/hypervisor.svg)](https://crates.io/crates/hypervisor)
 [![docs.rs](https://img.shields.io/docsrs/hypervisor)](https://docs.rs/hypervisor)
-[![CI](https://github.com/saurvs/hypervisor-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/saurvs/hypervisor-rs/actions/workflows/ci.yml)
+[![CI](https://github.com/sauravsc/hypervisor-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/sauravsc/hypervisor-rs/actions/workflows/ci.yml)
 [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](#minimum-supported-rust-version)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
@@ -23,7 +23,7 @@ other operating systems the crate compiles to nothing.
 
 **Documentation:** [docs.rs/hypervisor](https://docs.rs/hypervisor) (use the
 platform menu to switch between `aarch64-apple-darwin` and
-`x86_64-apple-darwin`). The old pages at saurvs.github.io/hypervisor-rs
+`x86_64-apple-darwin`). The old pages at sauravsc.github.io/hypervisor-rs
 describe 0.0.x.
 
 ## Installation
