@@ -25,7 +25,7 @@ THE SOFTWARE.
 use libc::*;
 
 /// Hypervisor Framework return code
-pub type hv_return_t = uint32_t;
+pub type hv_return_t = u32;
 
 // Hypervisor Framework return codes
 pub const HV_SUCCESS      : hv_return_t = 0;
@@ -37,7 +37,7 @@ pub const HV_NO_DEVICE    : hv_return_t = 0xfae94006;
 pub const HV_UNSUPPORTED  : hv_return_t = 0xfae9400f;
 
 /// Options for hv_vcpu_create()
-pub type hv_vm_options_t = uint64_t;
+pub type hv_vm_options_t = u64;
 pub const HV_VM_DEFAULT: hv_vm_options_t = 0 << 0;
 
 // Creating and Destroying VM Instances
@@ -53,7 +53,7 @@ extern {
 pub type hv_vcpuid_t = c_uint;
 
 // Option for hv_vcpu_create()
-pub const HV_VCPU_DEFAULT: uint64_t = 0;
+pub const HV_VCPU_DEFAULT: u64 = 0;
 
 // Creating and Managing vCPU Instances
 extern {
@@ -67,7 +67,7 @@ extern {
     pub fn hv_vcpu_interrupt(vcpu: *const hv_vcpuid_t, vcpu_count: c_uint) -> hv_return_t;
 
     /// Returns the cumulative execution time of a vCPU in nanoseconds
-    pub fn hv_vcpu_get_exec_time(vcpu: hv_vcpuid_t, time: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_get_exec_time(vcpu: hv_vcpuid_t, time: *mut u64) -> hv_return_t;
 
     /// Forces flushing of cached vCPU state
     pub fn hv_vcpu_flush(vcpu: hv_vcpuid_t) -> hv_return_t;
@@ -83,10 +83,10 @@ extern {
 extern {
     /// Returns the current value of an architectural x86 register
     /// of a vCPU
-    pub fn hv_vcpu_read_register(vcpu: hv_vcpuid_t, reg: super::x86Reg, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_read_register(vcpu: hv_vcpuid_t, reg: super::x86Reg, value: *mut u64) -> hv_return_t;
 
     /// Sets the value of an architectural x86 register of a vCPU
-    pub fn hv_vcpu_write_register(vcpu: hv_vcpuid_t, reg: super::x86Reg, value: uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_write_register(vcpu: hv_vcpuid_t, reg: super::x86Reg, value: u64) -> hv_return_t;
 }
 
 // Accessing Floating Point (FP) State
@@ -103,19 +103,19 @@ extern {
 // Accessing Machine Specific Registers (MSRs)
 extern {
     /// Enables an MSR to be used natively by the VM
-    pub fn hv_vcpu_enable_native_msr(vcpu: hv_vcpuid_t, msr: uint32_t, enable: bool) -> hv_return_t;
+    pub fn hv_vcpu_enable_native_msr(vcpu: hv_vcpuid_t, msr: u32, enable: bool) -> hv_return_t;
 
     /// Returns the current value of an MSR of a vCPU
-    pub fn hv_vcpu_read_msr(vcpu: hv_vcpuid_t, msr: uint32_t, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_read_msr(vcpu: hv_vcpuid_t, msr: u32, value: *mut u64) -> hv_return_t;
 
     /// Set the value of an MSR of a vCPU
-    pub fn hv_vcpu_write_msr(vcpu: hv_vcpuid_t, msr: uint32_t, value: *const uint64_t) -> hv_return_t;
+    pub fn hv_vcpu_write_msr(vcpu: hv_vcpuid_t, msr: u32, value: *const u64) -> hv_return_t;
 }
 
 // Managing Timestamp-Counters (TSC)
 extern {
     /// Synchronizes guest Timestamp-Counters (TSC) across all vCPUs
-    pub fn hv_vm_sync_tsc(tsc: uint64_t) -> hv_return_t;
+    pub fn hv_vm_sync_tsc(tsc: u64) -> hv_return_t;
 }
 
 /// Type of a user virtual address
@@ -123,10 +123,10 @@ pub type hv_uvaddr_t = *const c_void;
 
 /// Guest physical memory region permissions for hv_vm_map()
 /// and hv_vm_protect()
-pub type hv_memory_flags_t = uint64_t;
+pub type hv_memory_flags_t = u64;
 
 /// Type of a guest physical address
-pub type hv_gpaddr_t = uint64_t;
+pub type hv_gpaddr_t = u64;
 
 // Guest physical memory region permissions for hv_vm_map() and hv_vm_protect()
 pub const HV_MEMORY_READ : hv_memory_flags_t = 1 << 0;
@@ -150,13 +150,13 @@ extern {
 // Managing Virtual Machine Control Structure (VMCS)
 extern {
     /// Returns the current value of a VMCS field of a vCPU
-    pub fn hv_vmx_vcpu_read_vmcs(vcpu: hv_vcpuid_t, field: uint32_t, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vmx_vcpu_read_vmcs(vcpu: hv_vcpuid_t, field: u32, value: *mut u64) -> hv_return_t;
 
     /// Sets the value of a VMCS field of a vCPU
-    pub fn hv_vmx_vcpu_write_vmcs(vcpu: hv_vcpuid_t, field: uint32_t, value: uint64_t) -> hv_return_t;
+    pub fn hv_vmx_vcpu_write_vmcs(vcpu: hv_vcpuid_t, field: u32, value: u64) -> hv_return_t;
 
     /// Returns the VMX capabilities of the host processor
-    pub fn hv_vmx_read_capability(field: super::VMXCap, value: *mut uint64_t) -> hv_return_t;
+    pub fn hv_vmx_read_capability(field: super::VMXCap, value: *mut u64) -> hv_return_t;
 
     /// Sets the address of the guest APIC for a vCPU in the
     /// guest physical address space of the VM
