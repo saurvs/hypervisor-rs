@@ -5,8 +5,8 @@ virtual machines on macOS.
 The framework has a different API on each Mac architecture, and so does this
 crate. Both are available at the crate root, selected by the target:
 
-* **Apple silicon (`aarch64`)**: a safe API built around [`Vm`], [`Vcpu`] and
-  [`GuestMemory`]. Requires macOS 11 or newer.
+* **Apple silicon (`aarch64`)**: a safe API built around `Vm`, `Vcpu` and
+  `GuestMemory`. Requires macOS 11 or newer.
 * **Intel (`x86_64`)**: the original VT-x API (`create_vm`, `vCPU`, `map_mem`,
   VMCS access, the `consts` module). Requires macOS 10.10 or newer and a CPU
   with VT-x, EPT and unrestricted mode (`sysctl kern.hv_support` prints `1`).
@@ -14,7 +14,9 @@ crate. Both are available at the crate root, selected by the target:
 On other targets the crate is empty, so it can sit in a cross-platform
 dependency tree.
 
-The raw C API of the current architecture is in the `ffi` module.
+The raw C API of the current architecture is in the `ffi` module. On
+docs.rs, switch between the `aarch64-apple-darwin` and `x86_64-apple-darwin`
+targets to see each API.
 
 # Entitlement
 
