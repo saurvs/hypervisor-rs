@@ -1,16 +1,21 @@
 [package]
 name = "hypervisor"
-version = "0.0.8"
+version = "0.1.0"
 authors = ["Saurav Sachidanand <sauravsachidanand@gmail.com>"]
-
+edition = "2024"
+rust-version = "1.85"
 license = "MIT"
-repository = "https://www.github.com/saurvs/hypervisor-rs"
-documentation = "https://saurvs.github.io/hypervisor-rs"
+description = "Safe Rust bindings to Apple's Hypervisor.framework (Apple silicon and Intel Macs)"
+repository = "https://github.com/saurvs/hypervisor-rs"
+documentation = "https://docs.rs/hypervisor"
+readme = "README.md"
+keywords = ["hypervisor", "virtualization", "macos", "apple-silicon", "vmx"]
+categories = ["api-bindings", "os::macos-apis", "virtualization"]
+exclude = ["/.github", "/.cargo"]
 
-description = " Hardware-accelerated virtualization on OS X"
-keywords = ["hypervisor", "virtualization", "osx", "x86", "VT-x"]
+[target.'cfg(all(target_os = "macos", target_arch = "aarch64"))'.dependencies]
+libc = "0.2.155"
 
-build = "build.rs"
-
-[dependencies]
-libc = "0.2.11"
+[package.metadata.docs.rs]
+default-target = "aarch64-apple-darwin"
+targets = ["aarch64-apple-darwin", "x86_64-apple-darwin"]
