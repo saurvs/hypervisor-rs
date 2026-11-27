@@ -123,7 +123,7 @@ unsafe extern "C" {
     pub fn hv_vcpu_read_msr(vcpu: hv_vcpuid_t, msr: u32, value: *mut u64) -> hv_return_t;
 
     /// Set the value of an MSR of a vCPU
-    pub fn hv_vcpu_write_msr(vcpu: hv_vcpuid_t, msr: u32, value: *const u64) -> hv_return_t;
+    pub fn hv_vcpu_write_msr(vcpu: hv_vcpuid_t, msr: u32, value: u64) -> hv_return_t;
 }
 
 // Managing Timestamp-Counters (TSC)

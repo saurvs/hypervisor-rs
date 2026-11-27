@@ -248,7 +248,7 @@ impl vCPU {
 
     /// Set the value of an MSR of the vCPU
     pub fn write_msr(&self, msr: u32, value: u64) -> Result<()> {
-        check(unsafe { hv_vcpu_write_msr(self.id, msr, &value) })
+        check(unsafe { hv_vcpu_write_msr(self.id, msr, value) })
     }
 
     /// Returns the current value of an architectural x86 register
