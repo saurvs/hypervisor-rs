@@ -20,13 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//! Interrupt Request (IRQ) Codes
+//! Some useful constants
 
-pub const IRQ_INFO_EXT_IRQ       : u32 = 0 <<  8;
-pub const IRQ_INFO_NMI           : u32 = 2 <<  8;
-pub const IRQ_INFO_HARD_EXC      : u32 = 3 <<  8;
-pub const IRQ_INFO_SOFT_IRQ      : u32 = 4 <<  8;
-pub const IRQ_INFO_PRIV_SOFT_EXC : u32 = 5 <<  8;
-pub const IRQ_INFO_SOFT_EXC      : u32 = 6 <<  8;
-pub const IRQ_INFO_ERROR_VALID   : u32 = 1 << 11;
-pub const IRQ_INFO_VALID         : u32 = 1 << 31;
+pub mod irq;
+pub mod vmcs;
+pub mod vmx_cap;
+pub mod vmx_exit;
+
+pub const VMX_BASIC_TRUE_CTLS: u64 = 1 << 55;
